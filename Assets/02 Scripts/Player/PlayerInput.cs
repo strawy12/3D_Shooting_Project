@@ -12,7 +12,9 @@ public class PlayerInput : MonoBehaviour
     public UnityEvent OnJumpButtonPressDown;
 
     public UnityEvent<bool> OnRunButtonState;
-    public UnityEvent OnThrowButtonPressDown;
+    public UnityEvent OnThrowButtonPress;
+    public UnityEvent OnThrowButtonRelease;
+    public UnityEvent OnThrowCancel;
 
     private bool _fireButtonDown = false;
 
@@ -69,9 +71,24 @@ public class PlayerInput : MonoBehaviour
 
     private void GetThrowInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKey(KeyCode.E))
         {
-            OnThrowButtonPressDown?.Invoke();
+            OnThrowButtonPress?.Invoke();
         }
+
+        if (Input.GetKeyUp(KeyCode.E))
+        {
+            if (Input.GetMouseButton(1))
+            {
+                OnThrowCancel?.Invoke();
+            }
+
+            else
+            {
+                OnThrowButtonRelease?.Invoke();
+            }
+        }
+
+
     }
 }

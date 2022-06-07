@@ -305,4 +305,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91044b4fcffddfd4fb63ace51a776728, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hoshiTanEffect: {fileID: 0}
+  _hoshiTanEffect: {fileID: 1876081050882714, guid: e5df5caad603c8349ba3481b8ded0927, type: 3}

@@ -15,23 +15,23 @@ public class PlayerThrow : MonoBehaviour
 
     private HoshiTan _currentObject;
 
-    public void Throw()
+    public void Throw(float t)
     {
-        _hoshiTanPref = Instantiate(_hoshiTanPref, _throwPos.position, _throwPos.rotation);
-        _currentObject.transform.SetParent(_throwPos);
+        _currentObject = Instantiate(_hoshiTanPref);
+        _currentObject.InitObject(_throwPos);
 
-        StartCoroutine(ThrowCoroutine());
+        StartCoroutine(ThrowCoroutine(t));
     }
 
-    private IEnumerator ThrowCoroutine()
+    private IEnumerator ThrowCoroutine(float t)
     {
         yield return new WaitForSeconds(_throwDelay);
 
         Vector3 direction = Camera.main.transform.TransformDirection(Vector3.forward);
         direction.y = 1f;
 
-        _currentObject.transform.SetParent(null);
-        _currentObject.ThrowHoshiTan(direction.normalized, _maxThrowForce);
+        float force = Mathf.Lerp(0f, _maxThrowForce, t);
+        _currentObject.ThrowHoshiTan(direction.normalized, force);
 
     }
 }
