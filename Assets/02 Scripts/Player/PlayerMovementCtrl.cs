@@ -130,7 +130,7 @@ public class PlayerMovementCtrl : MonoBehaviour
     {
         Vector3 pos = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z);
         Vector3 size = _collider.bounds.size * 0.5f;
-        return Physics.OverlapBox(pos, size, Quaternion.identity, 1 << 6).Length > 0;
+        return Physics.OverlapBox(pos, size, Quaternion.identity).Length > 1;
     }
 
     private void OnDrawGizmos()
