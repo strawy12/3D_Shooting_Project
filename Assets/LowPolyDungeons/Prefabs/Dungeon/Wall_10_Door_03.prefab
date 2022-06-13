@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 430984522395682793}
   - component: {fileID: 8780411054225842370}
   - component: {fileID: 1392676216166169012}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall_10_Door_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,6 +129,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door_09
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: a8f49de9e261da34aa87d219311cf193, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a8f49de9e261da34aa87d219311cf193, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -213,6 +217,10 @@ PrefabInstance:
     - target: {fileID: 100000, guid: 1b4d68e44d496b244a718bf039f80ad3, type: 3}
       propertyPath: m_Name
       value: DoorFurniture_01 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1b4d68e44d496b244a718bf039f80ad3, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 1b4d68e44d496b244a718bf039f80ad3, type: 3}
       propertyPath: m_RootOrder
