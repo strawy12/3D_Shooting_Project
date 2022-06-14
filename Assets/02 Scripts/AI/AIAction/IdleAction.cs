@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleAction : MonoBehaviour
+public class IdleAction : AIAction
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Enter()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute()
     {
-        
+        _aiMovementData.direction = Vector3.zero;
+        _aiBrain.Move(Vector3.zero);
+    }
+
+    public override void Exit()
+    {
     }
 }

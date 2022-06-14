@@ -8,8 +8,10 @@ public abstract class AgentMovement : MonoBehaviour
 {
     [SerializeField] protected AgentMovementDataSO _movementData;
 
-    protected Rigidbody _rigid;
-    protected Collider _collider;
+    protected float _originRunSpeed;
+    protected float _originWalkSpeed;
+
+
 
     protected Vector3 _currentDir = Vector3.zero;
     protected float _currentVelocity = 3f;
@@ -21,29 +23,22 @@ public abstract class AgentMovement : MonoBehaviour
 
     private void Awake()
     {
-        _rigid = GetComponent<Rigidbody>();
-    }
 
-    protected virtual void ChildAwake()
-    {
-
+        _originRunSpeed = _movementData.runMaxSpeed;
+        _originWalkSpeed = _movementData.moveMaxSpeed;
+        ChildAwake();
     }
+    protected virtual void ChildAwake() { }
 
     private void FixedUpdate()
     {
         OnChangeVelocity?.Invoke(_currentVelocity);
-
-
-        Vector3 velocity = _currentDir;
-        velocity.x *= _currentVelocity;
-        velocity.y = _rigid.velocity.y;
-        velocity.z *= _currentVelocity;
-
-        _rigid.velocity = velocity;
-        ChangeBody();
+        ChildUpdate();
     }
 
-    public void MovementInput(Vector3 movementInput)
+    protected virtual void ChildUpdate() { }
+
+    public virtual void MovementInput(Vector3 movementInput)
     {
         if (movementInput.sqrMagnitude > 0)
         {
@@ -68,10 +63,7 @@ public abstract class AgentMovement : MonoBehaviour
         }
         _currentVelocity = CalculateSpeed(movementInput);
     }
-
-    protected abstract Vector3 GetForward();
-
-    private float CalculateSpeed(Vector3 movementInput)
+    protected float CalculateSpeed(Vector3 movementInput)
     {
         if (movementInput.sqrMagnitude > 0f)
         {
@@ -86,36 +78,30 @@ public abstract class AgentMovement : MonoBehaviour
         return Mathf.Clamp(_currentVelocity, 0f, _isRun ? _movementData.runMaxSpeed : _movementData.moveMaxSpeed);
     }
 
-    private void ChangeBody()
-    {
-        if (_currentVelocity > 0f)
-        {
-            Vector3 newForward = _rigid.velocity;
-            newForward.y = 0f;
 
-            transform.forward = Vector3.Lerp(transform.forward, newForward, _movementData.turnSpeed * Time.deltaTime);
-        }
-    }
+    public abstract void ImmediatelyForwardBody();
+    protected abstract Vector3 GetForward();
 
-    public void ImmediatelyForwardBody()
-    {
-        if (_currentVelocity > 0f) return;
-        Vector3 forward = GetForward();
-        forward.y = 0f;
-        transform.forward = forward;
-    }
 
     public void ChangeRunState(bool state)
     {
         _isRun = state;
     }
 
-
-    protected bool IsGround()
+    public void ChangeMoveSpeed(float speed)
     {
-        Vector3 pos = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z);
-        Vector3 size = _collider.bounds.size * 0.5f;
-        return Physics.OverlapBox(pos, size, Quaternion.identity).Length > 1;
+        if (speed <= 0f) return;
+
+        _movementData.moveMaxSpeed = speed;
+        _movementData.runMaxSpeed = speed * 1.5f;
     }
+
+    public void ResetMoveSpeed()
+    {
+        _movementData.runMaxSpeed = _originRunSpeed;
+        _movementData.moveMaxSpeed = _originWalkSpeed;
+    }
+
+
 
 }

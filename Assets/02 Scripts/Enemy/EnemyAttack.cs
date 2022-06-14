@@ -6,13 +6,13 @@ using UnityEngine.Events;
 public abstract class EnemyAttack : MonoBehaviour
 {
     protected AIBrain _aiBrain;
-    // Enemy 스크립트
+    protected Enemy _enemy;
 
     public float attackDelay = 1f;
 
-    protected bool _waitBeeforeNextAttack;
+    protected bool _waitBeforeNextAttack;
 
-    public bool WaitingForNextAttack => _waitBeeforeNextAttack;
+    public bool WaitingForNextAttack => _waitBeforeNextAttack;
 
     protected bool _isAttacking;
     public bool IsAttacking => _isAttacking;
@@ -22,6 +22,7 @@ public abstract class EnemyAttack : MonoBehaviour
     private void Awake()
     {
         _aiBrain = GetComponent<AIBrain>();
+        _enemy = GetComponent<Enemy>();
         ChildAwake();
     }
 
@@ -29,9 +30,9 @@ public abstract class EnemyAttack : MonoBehaviour
 
     protected IEnumerator WaitBeforeAttackCoroutine()
     {
-        _waitBeeforeNextAttack = true;
+        _waitBeforeNextAttack = true;
         yield return new WaitForSeconds(attackDelay);
-        _waitBeeforeNextAttack = false;
+        _waitBeforeNextAttack = false;
     }
 
     public void Reset()

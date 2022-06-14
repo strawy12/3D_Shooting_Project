@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
 public class AIState : MonoBehaviour
 {
-    [SerializeField] private AIAction _currentAction;
-    [SerializeField] private List<AIAction> _executeActionList;
+    public UnityEvent ActionEnter;
+    public UnityEvent ActionExecute;
+    public UnityEvent ActionExit;
 
     [SerializeField] private List<AITransition> _currentTransitionList;
 
@@ -21,43 +23,43 @@ public class AIState : MonoBehaviour
 
     public void State_Enter()
     {
-        _currentAction?.Enter();
+        ActionEnter?.Invoke();
     }
 
     public void State_Execute()
     {
-
-        _currentAction?.Execute();
-
-        foreach (AIAction action in _executeActionList)
-        {
-            action.Execute();
-        }
+        ActionExecute?.Invoke();
 
         CheckTransition();
     }
 
     public void State_Exit()
     {
-        _currentAction?.Exit();
+        ActionExit?.Invoke();
     }
 
     private void CheckTransition()
     {
+
         foreach (AITransition transition in _currentTransitionList)
         {
             if (transition.CheckAllDecision())
             {
-                _aiBrain.ChangeState(transition.Positive);
-                break;
+                if (transition.Positive != null)
+                {
+                    _aiBrain.ChangeState(transition.Positive);
+                    break;
+                }
             }
 
             else
             {
-                if(transition.Negetive != null)
-                {
-                    _aiBrain.ChangeState(transition.Negetive);
 
+                if (transition.Negetive != null)
+                {
+
+                    _aiBrain.ChangeState(transition.Negetive);
+                    break;
                 }
             }
         }

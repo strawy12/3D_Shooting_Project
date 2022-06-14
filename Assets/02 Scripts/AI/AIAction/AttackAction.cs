@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackAction : MonoBehaviour
+public class AttackAction : AIAction
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void Enter()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Execute()
     {
-        
+        _aiMovementData.direction = Vector3.zero;
+        _aiMovementData.pointOfIntgerest = _aiBrain.Target.position;
+        _aiBrain.Move(_aiMovementData.direction);
+        _aiActionData.attack = true;
+
+        _aiBrain.Attack();
+    }
+
+    public override void Exit()
+    {
     }
 }

@@ -3,11 +3,37 @@ using UnityEngine;
 public class PlayerMovement : AgentMovement
 {
     [SerializeField] private float _jumpPower = 5f;
+    protected Rigidbody _rigid;
+    protected Collider _collider;
 
     protected override void ChildAwake()
     {
+        _rigid = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
     }
+
+    protected override void ChildUpdate()
+    {
+        Vector3 velocity = _currentDir;
+        velocity.x *= _currentVelocity;
+        velocity.y = _rigid.velocity.y;
+        velocity.z *= _currentVelocity;
+
+        _rigid.velocity = velocity;
+        ChangeBody();
+    }
+
+    private void ChangeBody()
+    {
+        if (_currentVelocity > 0f)
+        {
+            Vector3 newForward = _rigid.velocity;
+            newForward.y = 0f;
+
+            transform.forward = Vector3.Lerp(transform.forward, newForward, _movementData.turnSpeed * Time.deltaTime);
+        }
+    }
+
     public void Jump()
     {
         if (IsGround())
@@ -19,5 +45,48 @@ public class PlayerMovement : AgentMovement
     protected override Vector3 GetForward()
     {
         return Define.MainCam.transform.TransformDirection(Vector3.forward);
+    }
+
+    protected bool IsGround()
+    {
+        Vector3 pos = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z);
+        Vector3 size = _collider.bounds.size * 0.5f;
+        return Physics.OverlapBox(pos, size, Quaternion.identity).Length > 1;
+    }
+
+    public override void ImmediatelyForwardBody()
+    {
+        if (_currentVelocity > 0f) return;
+        Vector3 forward = GetForward();
+        forward.y = 0f;
+        transform.forward = forward;
+    }
+
+
+
+    public override void MovementInput(Vector3 movementInput)
+    {
+        if (movementInput.sqrMagnitude > 0)
+        {
+            // Define static 으로 만들기
+            Vector3 forward = GetForward();
+            forward.y = 0f;
+
+            Vector3 right = new Vector3(forward.z, 0f, -forward.x);
+
+            Vector3 targetDir = forward * movementInput.z + right * movementInput.x;
+
+            Vector3 currentDir = _currentDir;
+            currentDir.y = 0f;
+
+            if (Vector3.Dot(currentDir, targetDir) < 0)
+            {
+                _currentVelocity = 0f;
+            }
+
+            _currentDir = Vector3.RotateTowards(_currentDir, targetDir, _movementData.rotateMoveSpeed * Time.deltaTime, 1000f);
+            _currentDir.Normalize();
+        }
+        _currentVelocity = CalculateSpeed(movementInput);
     }
 }

@@ -11,7 +11,7 @@ public class AIBrain : MonoBehaviour
     private AIState _currentState;
 
     public UnityEvent<Vector3> OnMovementKeyPress;
-   public UnityEvent<Vector3> OnPointerPositionChanged;
+    public UnityEvent<float> OnChangeKeyMoveSpeed;
    public UnityEvent OnFireButtonPress;
    public UnityEvent OnFireButtonRelease;
 
@@ -23,6 +23,7 @@ public class AIBrain : MonoBehaviour
 
     private void Awake()
     {
+        _target = Define.PlayerRef;
     }
 
     void Start()
@@ -47,10 +48,10 @@ public class AIBrain : MonoBehaviour
         OnFireButtonPress?.Invoke();
     }
 
-    public void Move(Vector3 movementDir, Vector3 targetDir)
+    public void Move(Vector3 movementDir, float moveSpeed = 0f)
     {
         OnMovementKeyPress?.Invoke(movementDir);
-        OnPointerPositionChanged?.Invoke(targetDir);
+        OnChangeKeyMoveSpeed?.Invoke(moveSpeed);
     }
 
     public void ChangeState(AIState aIState)
@@ -60,7 +61,7 @@ public class AIBrain : MonoBehaviour
 
         _currentState = aIState;
 
-        _currentState.State_Enter();
+        _currentState?.State_Enter();
         isChanged = false;
     }
 

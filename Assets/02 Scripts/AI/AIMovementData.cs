@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class AIMovementData : MonoBehaviour
 {
-    public Vector2 direction;
-    public Vector2 pointOfIntgerest;
+    public Vector3 direction;
+    public Vector3 pointOfIntgerest;
+
+    public float increaseStamina;
+    public float decreaseStamina;
+
+    public float maxStamina;
+    public float currentStamina;
 }
