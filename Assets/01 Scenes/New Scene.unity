@@ -1307,7 +1307,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692389834}
-  m_LocalRotation: {x: 0.13195643, y: -0.00008181307, z: 0.000010890999, w: 0.9912555}
+  m_LocalRotation: {x: 0.13195643, y: -0.00008185122, z: 0.000010896077, w: 0.9912555}
   m_LocalPosition: {x: 0.0009790909, y: 3.4, z: -5.93}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2427,8 +2427,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   direction: {x: 0, y: 0, z: 0}
   pointOfIntgerest: {x: 0, y: 0, z: 0}
-  increaseStamina: 10
-  decreaseStamina: 10
+  increaseStamina: 0
+  decreaseStamina: 0
   maxStamina: 100
   currentStamina: 100
 --- !u!114 &1290165194
@@ -11390,7 +11390,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1969629658}
-  m_LocalRotation: {x: 0.13195641, y: -0.00008181308, z: 0.000010890997, w: 0.9912555}
+  m_LocalRotation: {x: 0.13195641, y: -0.00008185121, z: 0.000010896075, w: 0.9912555}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

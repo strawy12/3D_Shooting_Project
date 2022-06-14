@@ -19,7 +19,7 @@ public class ChaseAction : AIAction
         _aiMovementData.currentStamina = Mathf.Clamp(_aiMovementData.currentStamina, 0f, _aiMovementData.maxStamina);
 
         Vector3 dir = _aiBrain.Target.position - transform.position;
-
+        dir.y = 0f;
         _aiMovementData.direction = dir.normalized;
 
         float t = _aiMovementData.currentStamina / _aiMovementData.maxStamina;
