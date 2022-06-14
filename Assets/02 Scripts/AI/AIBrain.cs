@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public class AIBrain : MonoBehaviour
 {
     [SerializeField] private AIState _defaultState;
-    [SerializeField] private string _animalName;
 
     private AIState _currentState;
 

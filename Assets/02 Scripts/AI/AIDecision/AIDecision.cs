@@ -8,6 +8,8 @@ public abstract class AIDecision : MonoBehaviour
     protected AIMovementData _aiMovementData;
     protected AIBrain _aiBrain;
 
+    [SerializeField] private bool _isNegetive = false;
+
     private void Awake()
     {
         _aiActionData = transform.GetComponentInParent<AIActionData>();
@@ -19,4 +21,8 @@ public abstract class AIDecision : MonoBehaviour
 
     protected virtual void ChildAwake() { }
     public abstract bool MakeADecision();
+    public bool GetDecicionState()
+    {
+        return MakeADecision() == !_isNegetive;
+    }
 }

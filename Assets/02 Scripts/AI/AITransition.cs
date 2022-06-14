@@ -17,7 +17,7 @@ public class AITransition : MonoBehaviour
     {
         foreach(var decision in _decisionList)
         {
-            if(!decision.MakeADecision())
+            if(!decision.GetDecicionState())
             {
                 return false;
             }
