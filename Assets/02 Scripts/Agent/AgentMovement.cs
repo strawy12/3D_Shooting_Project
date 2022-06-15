@@ -17,6 +17,7 @@ public abstract class AgentMovement : MonoBehaviour
     protected float _currentVelocity = 3f;
 
     protected bool _isRun = false;
+    protected bool _isStop = false;
 
     public UnityEvent<float> OnChangeVelocity;
 
@@ -32,6 +33,8 @@ public abstract class AgentMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_isStop) return;
+
         OnChangeVelocity?.Invoke(_currentVelocity);
         ChildUpdate();
     }
@@ -102,6 +105,11 @@ public abstract class AgentMovement : MonoBehaviour
         _movementData.moveMaxSpeed = _originWalkSpeed;
     }
 
-
+    public void StopImmediatelly()
+    {
+        _isStop = true;
+        _currentVelocity = 0f;
+        _currentDir = Vector3.zero;
+    }
 
 }

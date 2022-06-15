@@ -22,6 +22,8 @@ public class PatrolAction : AIAction
                 break;
             }
         }
+        Debug.Log("1 "+ transform.position);
+        Debug.Log("2 " + _movementDir * _distance);
 
         _targetPos = transform.position + (_movementDir * _distance);
 

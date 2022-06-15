@@ -56,11 +56,11 @@ public class EnemyMovement : AgentMovement
 
     protected override Vector3 GetForward()
     {
-        if(_aiActionData.targetSpotted)
+        if(_aiActionData.attack)
         {
             return (_target.position - transform.position).normalized;
         }
 
-        return transform.forward;
+        return Vector3.forward;
     }
 }

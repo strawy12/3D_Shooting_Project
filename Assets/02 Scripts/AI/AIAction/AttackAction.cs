@@ -11,7 +11,6 @@ public class AttackAction : AIAction
     public override void Execute()
     {
         _aiMovementData.direction = Vector3.zero;
-        _aiMovementData.pointOfIntgerest = _aiBrain.Target.position;
         _aiBrain.Move(_aiMovementData.direction);
         _aiActionData.attack = true;
 

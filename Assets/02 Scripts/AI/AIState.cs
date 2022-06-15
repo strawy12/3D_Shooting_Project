@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,9 +41,10 @@ public class AIState : MonoBehaviour
 
     private void CheckTransition()
     {
-
         foreach (AITransition transition in _currentTransitionList)
         {
+            if (transition == null) return;
+
             if (transition.CheckAllDecision())
             {
                 if (transition.Positive != null)
@@ -51,7 +53,6 @@ public class AIState : MonoBehaviour
                     break;
                 }
             }
-
             else
             {
 
@@ -62,6 +63,8 @@ public class AIState : MonoBehaviour
                     break;
                 }
             }
+
         }
+           
     }
 }

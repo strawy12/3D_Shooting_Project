@@ -37,7 +37,7 @@ public class AgentAnimation : MonoBehaviour
 
     public void AnimateAgent(float velocity)
     {
-        SetWalkAnim(velocity > 0f);
+        SetWalkAnim(velocity > 0.1f);
     }
 
     public void PlayDeadAnim()

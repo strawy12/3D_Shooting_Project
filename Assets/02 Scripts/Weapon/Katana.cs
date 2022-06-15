@@ -4,21 +4,20 @@ using UnityEngine;
 
 public class Katana : MonoBehaviour
 {
+    // 무기 데이터
+    [SerializeField] private int _damage;
     [SerializeField] private KatanaCollider _katanaCollider;
-    [SerializeField] private TrailRenderer _trailRenderer;
+    [SerializeField] private ParticleSystem _trailParticle;
 
     public void KatanaEnter(Collider other)
     {
-        Debug.Log("Attack");
+        if(other.gameObject.layer == LayerMask.GetMask("Enemy"))
+        other.GetComponent<IHittable>()?.GetHit(_damage, gameObject);
     }
 
     public void AttackStart()
     {
-        _trailRenderer.enabled = true;
+        _trailParticle.Play();
     }
 
-    public void AttackEnd()
-    {
-        _trailRenderer.enabled = false;
-    }
 }

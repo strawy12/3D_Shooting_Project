@@ -55,6 +55,24 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    private void OverlapAttackExtent()
+    {
+        switch(_attackStackCnt)
+        {
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+        }    
+    }
+
     public void AttackKeyUp()
     {
         _isKeyPress = false;

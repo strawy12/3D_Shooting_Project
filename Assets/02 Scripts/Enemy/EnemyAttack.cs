@@ -33,6 +33,12 @@ public abstract class EnemyAttack : MonoBehaviour
         _waitBeforeNextAttack = true;
         yield return new WaitForSeconds(attackDelay);
         _waitBeforeNextAttack = false;
+        ChildAfterWaitAttack();
+    }
+
+    protected virtual void ChildAfterWaitAttack()
+    {
+
     }
 
     public void Reset()

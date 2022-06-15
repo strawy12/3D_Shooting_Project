@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "SO/Weapon/BulletData")]
-public class BulletDataSO : ScriptableObject
+[CreateAssetMenu(menuName = "SO/Weapon/ProjectileData")]
+public class ProjectileDataSO : ScriptableObject
 {
     public GameObject prefab;
     [Range(0, 10)] public int damage = 1;
@@ -11,7 +11,6 @@ public class BulletDataSO : ScriptableObject
 
     [Range(0, 5f)] public float explosionRadius = 3f; 
 
-    public RuntimeAnimatorController animtorController;
 
     public float friction = 0f;
     public bool bounce = false; 
@@ -24,8 +23,6 @@ public class BulletDataSO : ScriptableObject
 
     [Range(1, 20)] public float knockBackPower = 5f;
     [Range(0.01f, 1f)] public float knockBackDelay = 0.1f;
-
-    public Material bulletMat;
 
     public float lifeTime = 2f;
 
