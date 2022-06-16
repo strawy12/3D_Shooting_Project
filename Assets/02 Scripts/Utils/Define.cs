@@ -6,7 +6,7 @@ using UnityEngine;
 public static class Define
 {
     private static Camera _mainCam;
-    private static CinemachineVirtualCamera _cmVCam = null;
+    private static CinemachineFreeLook _cmFLCam = null;
 
     public static Camera MainCam
     {
@@ -22,16 +22,16 @@ public static class Define
         
     }
 
-    public static CinemachineVirtualCamera VCam
+    public static CinemachineFreeLook FLCam
     {
         get
         {
-            if (_cmVCam == null)
+            if (_cmFLCam == null)
             {
-                _cmVCam = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
+                _cmFLCam = GameObject.FindObjectOfType<CinemachineFreeLook>();
             }
 
-            return _cmVCam;
+            return _cmFLCam;
         }
     }
 

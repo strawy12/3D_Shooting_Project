@@ -5,7 +5,7 @@ using Cinemachine;
 
 public class ShakeCameraFeedBack :FeedBack
 {
-    [SerializeField] private CinemachineVirtualCamera _cmVCam;
+     private CinemachineFreeLook _cmFLCam;
 
     [SerializeField]
     [Range(0f, 5f)] 
@@ -15,29 +15,32 @@ public class ShakeCameraFeedBack :FeedBack
     [Range(0f, 1f)]
     private float _duration = 0.1f;
 
-    private CinemachineBasicMultiChannelPerlin _noise;
+    private List<CinemachineBasicMultiChannelPerlin>_noiseList = new List<CinemachineBasicMultiChannelPerlin>();
 
-    private void OnEnable()
+    private void Awake()
     {
-        if (_cmVCam == null)
+        if (_cmFLCam == null)
         {
-            _cmVCam = Define.VCam;
+            _cmFLCam = Define.FLCam;
         }
 
-        _noise = _cmVCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+        _noiseList.Add(_cmFLCam.GetRig(0).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
+        _noiseList.Add(_cmFLCam.GetRig(1).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
+        _noiseList.Add(_cmFLCam.GetRig(2).GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>());
     }
 
     public override void CompletePrevFeedBack()
     {
         StopAllCoroutines();
 
-        _noise.m_AmplitudeGain = 0;
+        _noiseList.ForEach(x => x.m_AmplitudeGain = 0);
     }
 
     public override void CreateFeedBack()
     {
-        _noise.m_AmplitudeGain = _amplitude;
-        _noise.m_FrequencyGain = _intensity;
+        _noiseList.ForEach(x => x.m_AmplitudeGain = _amplitude);
+        _noiseList.ForEach(x => x.m_FrequencyGain = _intensity);
+
 
         StartCoroutine(ShakeCoroutine());
     }
@@ -47,12 +50,13 @@ public class ShakeCameraFeedBack :FeedBack
         float time = _duration;
         while(time > 0)
         {
-            _noise.m_AmplitudeGain = Mathf.Lerp(0, _amplitude, time / _duration);
+            _noiseList.ForEach(x => x.m_AmplitudeGain = _amplitude);
+            _noiseList.ForEach(x => x.m_AmplitudeGain = Mathf.Lerp(0, _amplitude, time / _duration));
             yield return null;
             time -= Time.deltaTime;
         }
 
-        _noise.m_AmplitudeGain = 0; 
+        _noiseList.ForEach(x => x.m_AmplitudeGain = 0f);
     }
 
 }

@@ -89,7 +89,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Atk1
-  m_Speed: 1
+  m_Speed: 1.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8619069374129816616}
@@ -488,7 +488,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Atk 2
-  m_Speed: 1
+  m_Speed: 1.3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -884869246886047545}
@@ -621,9 +621,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.22900915
+  m_TransitionDuration: 0
   m_TransitionOffset: 0.0937674
-  m_ExitTime: 0.7677975
+  m_ExitTime: 1
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -655,7 +655,7 @@ AnimatorStateMachine:
     m_Position: {x: 350, y: -110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8802749805806662294}
-    m_Position: {x: 350, y: 10, z: 0}
+    m_Position: {x: 470, y: 0, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3023812124582724237}
     m_Position: {x: 340, y: 230, z: 0}

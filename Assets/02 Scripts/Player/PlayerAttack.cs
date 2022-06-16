@@ -5,9 +5,6 @@ using UnityEngine.Events;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] private GameObject _projectiesPref;
-    [SerializeField] private Transform _firePos;
-
     [SerializeField] private float _attackDelay = 0.75f;
 
     private int _attackStackCnt = 0;
@@ -55,7 +52,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void OverlapAttackExtent()
+    private void OverlapAttackRange()
     {
         switch(_attackStackCnt)
         {

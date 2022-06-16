@@ -17,7 +17,7 @@ public abstract class EnemyAttack : MonoBehaviour
     protected bool _isAttacking;
     public bool IsAttacking => _isAttacking;
 
-    public UnityEvent AttackFeedBack;
+    public UnityEvent OnAttackFeedBack;
 
     private void Awake()
     {

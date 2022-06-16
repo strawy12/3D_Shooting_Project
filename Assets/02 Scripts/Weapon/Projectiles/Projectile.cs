@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class Projectile : PoolableMono
 {
-    [SerializeField] private ProjectileDataSO _projectileData;
+    [SerializeField] protected ProjectileDataSO _projectileData;
 
     protected bool _isEnemy;
 

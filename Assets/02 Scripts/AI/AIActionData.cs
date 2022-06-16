@@ -8,4 +8,5 @@ public class AIActionData : MonoBehaviour
     public bool attack;
     public bool targetSpotted;
     public bool arrived;
+    public bool isStiffen;
 }

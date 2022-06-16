@@ -21,7 +21,7 @@ public class SnakeAttack : EnemyAttack
             _attackCol.enabled = true;
             _waitAttack = true;
             _nowDamage = damage;
-            AttackFeedBack?.Invoke();
+            OnAttackFeedBack?.Invoke();
             StartCoroutine(WaitBeforeAttackCoroutine());
         }
     }

@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour, IHittable
     private EnemyMovement _enemyMovement;
     //임시 코드 에너미 데이터 만들어야함
     [SerializeField] private int damage;
+    [SerializeField] private Transform _hitEffectPos;
 
     private bool _isDead = false;
 
@@ -40,9 +41,8 @@ public class Enemy : MonoBehaviour, IHittable
         //}
 
         Health -= damage;
-
-        HitPoint = damagerDealer.transform.position;
         OnGetHit?.Invoke();
+        GenerateHitEffect();
 
         //DamagePopup popup = PoolManager.Instance.Pop("DamagePopup") as DamagePopup;
         //popup.Setup(damage, transform.position + new Vector3(0, 0.5f, 0), isCritical);
@@ -54,6 +54,14 @@ public class Enemy : MonoBehaviour, IHittable
             _enemyMovement.enabled = false;
             OnDie?.Invoke();
         }
+    }
+
+    public void GenerateHitEffect()
+    {
+        Debug.Log("ss");
+        ImpactEffect hitEffect = PoolManager.Inst.Pop("HitEffect") as ImpactEffect;
+        hitEffect.SetPositionAndRotation(_hitEffectPos.position, Quaternion.LookRotation(transform.forward));
+        hitEffect.StartEffect();
     }
 
     public void PerformAttack()

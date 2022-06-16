@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class EnemyMovement : AgentMovement
 {
+    [SerializeField] private float _turnBodySpeed;
     private Transform _target;
     private AIActionData _aiActionData;
     private NavMeshAgent _navMeshAgent;
@@ -29,6 +30,11 @@ public class EnemyMovement : AgentMovement
         _navMeshAgent.SetDestination(transform.position + _currentDir);
     }
 
+    public void ImmediateStop()
+    {
+        _navMeshAgent.isStopped = true;
+    }
+
     public override void ImmediatelyForwardBody()
     {
         if(_navMeshAgent.velocity != Vector3.zero)
@@ -37,6 +43,11 @@ public class EnemyMovement : AgentMovement
         }
 
         transform.forward = (_target.position - transform.position).normalized;
+    }
+
+    public void ChangeBody(Vector3 dir)
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _turnBodySpeed);
     }
 
     public override void MovementInput(Vector3 movementInput)

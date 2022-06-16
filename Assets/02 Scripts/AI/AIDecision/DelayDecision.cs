@@ -14,7 +14,6 @@ public class DelayDecision : AIDecision
 
     public override bool MakeADecision()
     {
-        Debug.Log(11);
         _timer += Time.deltaTime;
 
         if(_timer >= _delayTime)
