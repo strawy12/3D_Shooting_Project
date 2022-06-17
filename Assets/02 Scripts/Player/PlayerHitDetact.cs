@@ -86,7 +86,7 @@ public class PlayerHitDetact : MonoBehaviour
                     IHittable hitTarget = hit.transform.root.GetComponent<IHittable>();
 
                     hitTarget.HitPoint = hit.point;
-
+                    hitTarget.HitCount = _attackCnt;
                     hitTarget?.GetHit(_attackDamage * _attackCnt, gameObject);
                     OnSuccessAttack?.Invoke();
                 }

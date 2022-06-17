@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &850569247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 850569248}
+  - component: {fileID: 850569249}
+  m_Layer: 3
+  m_Name: SlowTimeFeedBack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &850569248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850569247}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5481082888465258906}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &850569249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 850569247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead65662b3de2a94380d2120f67c0673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _reachValue: 0.1
+  _duration: 0.7
 --- !u!1 &1760841884
 GameObject:
   m_ObjectHideFlags: 0
@@ -162,7 +207,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5481082888239741621}
   - component: {fileID: 5481082888239741620}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: HitDetact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,6 +249,18 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1859266879}
         m_TargetAssemblyTypeName: ShakeCameraFeedBack, Assembly-CSharp
+        m_MethodName: CreateFeedBack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 850569249}
+        m_TargetAssemblyTypeName: TimeFeedBack, Assembly-CSharp
         m_MethodName: CreateFeedBack
         m_Mode: 1
         m_Arguments:
@@ -8727,6 +8784,7 @@ Transform:
   m_Children:
   - {fileID: 1859266878}
   - {fileID: 1760841885}
+  - {fileID: 850569248}
   m_Father: {fileID: 5481082888364723142}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8737,6 +8795,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5481082888364723486}
     m_Modifications:
+    - target: {fileID: 7990682256260378740, guid: b231d4df7f6eaed47a51ab6bfaec4703, type: 3}
+      propertyPath: CustomDataModule.mode0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7990682256260378740, guid: b231d4df7f6eaed47a51ab6bfaec4703, type: 3}
+      propertyPath: CustomDataModule.enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8069828261847477196, guid: b231d4df7f6eaed47a51ab6bfaec4703, type: 3}
       propertyPath: m_RootOrder
       value: 4

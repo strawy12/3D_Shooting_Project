@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour, IHittable
 
     private bool _isDead = false;
 
+
     public bool IsEnemy { get; set; }
     public int Health { get; private set; }
     public Vector3 HitPoint { get; set; }
+    public int HitCount { get; set; }
 
     public UnityEvent OnDie;
     public UnityEvent OnGetHit;
@@ -41,6 +43,7 @@ public class Enemy : MonoBehaviour, IHittable
         //}
 
         Health -= damage;
+
         OnGetHit?.Invoke();
         GenerateHitEffect();
 
@@ -56,10 +59,10 @@ public class Enemy : MonoBehaviour, IHittable
         }
     }
 
+
     public void GenerateHitEffect()
     {
-        Debug.Log("ss");
-        ImpactEffect hitEffect = PoolManager.Inst.Pop("HitEffect") as ImpactEffect;
+        ImpactEffect hitEffect = PoolManager.Inst.Pop($"HitEffect_{HitCount}") as ImpactEffect;
         hitEffect.SetPositionAndRotation(_hitEffectPos.position, Quaternion.LookRotation(transform.forward));
         hitEffect.StartEffect();
     }

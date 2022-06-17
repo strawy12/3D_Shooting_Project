@@ -11,7 +11,7 @@ public class PlayerInput : MonoBehaviour
     public UnityEvent OnFireButtonRelease;
     public UnityEvent OnJumpButtonPressDown;
 
-    public UnityEvent<bool> OnRunButtonState;
+    public UnityEvent OnDashButtonPress;
     public UnityEvent OnThrowButtonPress;
     public UnityEvent OnThrowButtonRelease;
     public UnityEvent OnThrowCancel;
@@ -21,23 +21,19 @@ public class PlayerInput : MonoBehaviour
 
     void Update()
     {
-        GetRunKeyInput();
+        GetDashInput();
         GetMovementInput();
         GetFireInput();
         GetJumpInput();
         GetThrowInput();
     }
 
-    private void GetRunKeyInput()
+    private void GetDashInput()
     {
-        bool state = Input.GetKey(KeyCode.LeftShift);
-
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            state = false;
+            OnDashButtonPress?.Invoke();
         }
-
-        OnRunButtonState?.Invoke(state);
     }
 
     private void GetMovementInput()

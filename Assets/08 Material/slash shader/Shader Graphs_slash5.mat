@@ -52,8 +52,10 @@ Material:
     - bolder_thickness: 0.08
     - slash_distord: 0.44
     - slash_opacity: 3.61
+    - vertex_color: 0.18
     m_Colors:
     - Color_79ac9f904c7746f0b6d03e8c26cc671a: {r: 0, g: 0, b: 0, a: 0}
     - bolder_color: {r: 0.63584906, g: 0.90896225, b: 1, a: 1}
     - color_main: {r: 4.80152, g: 0.9240659, b: 2.6843836, a: 0}
+    - vertex_color: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
   m_BuildTextureStacks: []
