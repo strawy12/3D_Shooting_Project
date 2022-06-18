@@ -12,6 +12,8 @@ public class ShakeFeedBack : FeedBack
     // snapping : 격자단위로 떨리게 하는거, fadeout : 진동후 원래 자리로 돌아가나
     public override void CompletePrevFeedBack()
     {
+        if (_objectToShake == null) return;
+
         _objectToShake.transform.DOComplete();
         // 모든 트윈을 즉시 완료, 완료 트윈 갯수 반환
     }

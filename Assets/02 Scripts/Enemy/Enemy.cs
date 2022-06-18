@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class Enemy : MonoBehaviour, IHittable
 {
@@ -9,7 +10,11 @@ public class Enemy : MonoBehaviour, IHittable
     private EnemyMovement _enemyMovement;
     //임시 코드 에너미 데이터 만들어야함
     [SerializeField] private int damage;
+    [SerializeField] private float _hitEffectLifeTime;
     [SerializeField] private Transform _hitEffectPos;
+    [SerializeField] private Material _hitMat;
+
+    private SkinnedMeshRenderer _skinnedMeshRederer;
 
     private bool _isDead = false;
 
@@ -26,6 +31,17 @@ public class Enemy : MonoBehaviour, IHittable
     {
         _enemyAttack = GetComponent<EnemyAttack>();
         _enemyMovement = GetComponent<EnemyMovement>();
+        _skinnedMeshRederer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        Material[] temp = new Material[2];
+        temp[0] = _skinnedMeshRederer.material;
+        temp[1] = _hitMat;
+
+        _skinnedMeshRederer.materials = temp;
+
+        _hitMat = _skinnedMeshRederer.materials[1];
+        _hitMat.SetFloat("_FresnelPower", 0f);
+
     }
 
     public void GetHit(int damage, GameObject damagerDealer)
@@ -45,6 +61,7 @@ public class Enemy : MonoBehaviour, IHittable
         Health -= damage;
 
         OnGetHit?.Invoke();
+        ShowHitOutline();
         GenerateHitEffect();
 
         //DamagePopup popup = PoolManager.Instance.Pop("DamagePopup") as DamagePopup;
@@ -57,6 +74,18 @@ public class Enemy : MonoBehaviour, IHittable
             _enemyMovement.enabled = false;
             OnDie?.Invoke();
         }
+    }
+
+    private void ShowHitOutline()
+    {
+        DOTween.Kill(this);
+
+        _hitMat.SetFloat("_FresnelPower", 10f);
+
+        DOTween.To(() => _hitMat.GetFloat("_FresnelPower"),
+                value => _hitMat.SetFloat("_FresnelPower", value),
+                0f,
+                _hitEffectLifeTime);
     }
 
 

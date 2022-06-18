@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e7686a70c384a408ff26093a9dcfa2, type: 3}
   m_Name: HoshiMovementData
   m_EditorClassIdentifier: 
-  moveMaxSpeed: 3
+  moveMaxSpeed: 5
   runMaxSpeed: 10
   rotateMoveSpeed: 80
   turnSpeed: 5

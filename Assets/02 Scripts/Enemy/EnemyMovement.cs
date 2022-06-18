@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyMovement : AgentMovement
 {
-    [SerializeField] private float _turnBodySpeed;
     private Transform _target;
     private AIActionData _aiActionData;
     private NavMeshAgent _navMeshAgent;
@@ -47,7 +46,7 @@ public class EnemyMovement : AgentMovement
 
     public void ChangeBody(Vector3 dir)
     {
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _turnBodySpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * _movementData.turnSpeed);
     }
 
     public override void MovementInput(Vector3 movementInput)

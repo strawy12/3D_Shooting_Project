@@ -10,8 +10,11 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private float _dashCooltime;
     [SerializeField] private float _dashSpeed;
     [Range(0.1f, 1f)]
-    [SerializeField] private float _destinationMultiplier;
+    [SerializeField] private float _destinationBlockedOffset;
     [SerializeField] private float _dashDistance;
+    [SerializeField] private float _dashDistanceOffset;
+    [SerializeField] private float _effectDurationOffset;
+    [SerializeField] private DashEffect _dashEffect;
 
     private Vector3 _movementInput = Vector3.forward;
 
@@ -26,6 +29,7 @@ public class PlayerDash : MonoBehaviour
 
     public UnityEvent OnDashFeedBack;
     public UnityEvent OnBlockedDash;
+    public UnityEvent OnDashEnd;
 
     private bool _isBlocked;
 
@@ -47,8 +51,6 @@ public class PlayerDash : MonoBehaviour
 
     public void MovementInput(Vector3 movement)
     {
-        if (movement == Vector3.zero) return;
-
         _movementInput = movement;
     }
 
@@ -66,12 +68,19 @@ public class PlayerDash : MonoBehaviour
         Vector3 destination = CalculationDestination(targetDir, currentPos);
         float duration = CalulationDuration(destination, currentPos);
 
-        if(_isBlocked)
+        if (_isBlocked)
         {
             OnBlockedDash?.Invoke();
         }
         OnDashFeedBack?.Invoke();
-        transform.DOMove(destination, duration).SetEase(Ease.InCubic).OnComplete(() => _isWaiting = false);
+        _dashEffect.StartEffect(targetDir, duration + _effectDurationOffset);
+        transform.DOMove(destination, duration).SetEase(Ease.InCubic).OnComplete(Release);
+    }
+
+    private void Release()
+    {
+        _isWaiting = false;
+        OnDashEnd?.Invoke();
     }
 
     private void SetDashCount()
@@ -88,7 +97,7 @@ public class PlayerDash : MonoBehaviour
 
     private float CalulationDuration(Vector3 destination, Vector3 currentPos)
     {
-        
+
         currentPos.y = 0f;
 
         float duration = Vector3.Distance(currentPos, destination) / _dashSpeed;
@@ -100,6 +109,12 @@ public class PlayerDash : MonoBehaviour
     {
         Vector3 forward = _mainCam.transform.TransformDirection(Vector3.forward);
         forward.y = 0f;
+
+        if (_movementInput == Vector3.zero)
+        {
+            return forward;
+        }
+
         Vector3 right = new Vector3(forward.z, 0f, -forward.x);
         Vector3 targetDir = forward * _movementInput.z + right * _movementInput.x;
 
@@ -112,15 +127,21 @@ public class PlayerDash : MonoBehaviour
         RaycastHit hit;
         Vector3 destination;
 
-        if (Physics.Raycast(transform.position, targetDir.normalized, out hit, _dashDistance, _cantThroughLayer))
+        if (Physics.Raycast(transform.position, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer))
         {
             _isBlocked = true;
-            destination = hit.point * _destinationMultiplier;
+
+            Vector3 hitPoint = hit.point;
+
+            hitPoint.x += (hitPoint.x * _destinationBlockedOffset) * (hitPoint.x < currentPos.x ? 1f : -1f);
+            hitPoint.z += (hitPoint.z * _destinationBlockedOffset) * (hitPoint.z < currentPos.z ? 1f : -1f);
+
+            destination = hitPoint;
         }
         else
         {
             _isBlocked = false;
-            destination = targetDir.normalized * _dashDistance;
+            destination = currentPos + targetDir.normalized * _dashDistance;
         }
 
         Debug.Log($"currentPos : {currentPos}");
@@ -129,12 +150,12 @@ public class PlayerDash : MonoBehaviour
 
 
 
-        return currentPos + destination;
+        return destination;
     }
 
     private IEnumerator DashCountCharging()
     {
-        while(_dashCnt < _maxDashCnt)
+        while (_dashCnt < _maxDashCnt)
         {
             yield return new WaitForSeconds(_dashCooltime);
 

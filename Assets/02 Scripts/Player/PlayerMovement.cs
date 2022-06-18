@@ -6,6 +6,8 @@ public class PlayerMovement : AgentMovement
     protected Rigidbody _rigid;
     protected Collider _collider;
 
+    private bool _isDash;
+
     protected override void ChildAwake()
     {
         _rigid = GetComponent<Rigidbody>();
@@ -14,6 +16,8 @@ public class PlayerMovement : AgentMovement
 
     protected override void ChildUpdate()
     {
+        if (_isDash) return;
+
         Vector3 velocity = _currentDir;
         velocity.x *= _currentVelocity;
         velocity.y = _rigid.velocity.y;
@@ -21,6 +25,11 @@ public class PlayerMovement : AgentMovement
 
         _rigid.velocity = velocity;
         ChangeBody();
+    }
+
+    public void ChangeDashState(bool isDash)
+    {
+        _isDash = isDash;
     }
 
     private void ChangeBody()
@@ -36,6 +45,8 @@ public class PlayerMovement : AgentMovement
 
     public void Jump()
     {
+        if (_isDash) return;
+
         if (IsGround())
         {
             _rigid.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
@@ -72,6 +83,7 @@ public class PlayerMovement : AgentMovement
             Vector3 forward = GetForward();
             forward.y = 0f;
 
+
             Vector3 right = new Vector3(forward.z, 0f, -forward.x);
 
             Vector3 targetDir = forward * movementInput.z + right * movementInput.x;
@@ -83,7 +95,6 @@ public class PlayerMovement : AgentMovement
             {
                 _currentVelocity = 0f;
             }
-
             _currentDir = Vector3.RotateTowards(_currentDir, targetDir, _movementData.rotateMoveSpeed * Time.deltaTime, 1000f);
             _currentDir.Normalize();
         }

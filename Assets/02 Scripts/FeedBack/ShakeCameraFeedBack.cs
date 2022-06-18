@@ -38,6 +38,8 @@ public class ShakeCameraFeedBack :FeedBack
 
     public override void CreateFeedBack()
     {
+        CompletePrevFeedBack();
+
         _noiseList.ForEach(x => x.m_AmplitudeGain = _amplitude);
         _noiseList.ForEach(x => x.m_FrequencyGain = _intensity);
 
