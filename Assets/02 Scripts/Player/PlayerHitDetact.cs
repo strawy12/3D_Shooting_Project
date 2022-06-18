@@ -29,18 +29,15 @@ public class PlayerHitDetact : MonoBehaviour
         switch (_attackCnt)
         {
             case 1:
-                _radius = 1.6f;
                 _angle = 210f;
                 break;
 
             case 2:
-                _radius = 2f;
                 _angle = 360f;
                 break;
 
             case 3:
     
-                _radius = 1f;
                 _angle = 110f;
                 break;
         }
@@ -82,7 +79,6 @@ public class PlayerHitDetact : MonoBehaviour
 
                 if (hit.collider != null && hit.transform.root.gameObject.layer == 9)
                 {
-
                     IHittable hitTarget = hit.transform.root.GetComponent<IHittable>();
 
                     hitTarget.HitPoint = hit.point;
@@ -96,19 +92,19 @@ public class PlayerHitDetact : MonoBehaviour
 
 
 
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(transform.position, _radius);
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, _radius);
 
-    //    float angle1 = _angle / 2 + transform.eulerAngles.y;
-    //    float angle2 = -_angle / 2 + transform.eulerAngles.y;
+        float angle1 = _angle / 2 + transform.eulerAngles.y;
+        float angle2 = -_angle / 2 + transform.eulerAngles.y;
 
-    //    Vector3 Driection1 = new Vector3(Mathf.Sin(angle1 * Mathf.Deg2Rad), 0f, Mathf.Cos(angle1 * Mathf.Deg2Rad));
-    //    Vector3 Driection2 = new Vector3(Mathf.Sin(angle2 * Mathf.Deg2Rad), 0f, Mathf.Cos(angle2 * Mathf.Deg2Rad));
+        Vector3 Driection1 = new Vector3(Mathf.Sin(angle1 * Mathf.Deg2Rad), 0f, Mathf.Cos(angle1 * Mathf.Deg2Rad));
+        Vector3 Driection2 = new Vector3(Mathf.Sin(angle2 * Mathf.Deg2Rad), 0f, Mathf.Cos(angle2 * Mathf.Deg2Rad));
 
-    //    Gizmos.DrawLine(transform.position, transform.position + Driection1 * _radius);
-    //    Gizmos.DrawLine(transform.position, transform.position + Driection2 * _radius);
+        Gizmos.DrawLine(transform.position, transform.position + Driection1 * _radius);
+        Gizmos.DrawLine(transform.position, transform.position + Driection2 * _radius);
 
-    //}
+    }
 }

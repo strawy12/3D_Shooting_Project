@@ -98,6 +98,7 @@ public class Enemy : MonoBehaviour, IHittable
 
     public void PerformAttack()
     {
-        _enemyAttack.Attack(damage);
+        
+        //_enemyAttack.Attack(damage);
     }
 }
