@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class SnakeAttack : EnemyAttack
 {
-    private int _nowDamage;
+    private int _damage;
     [SerializeField] private ColliderTiggerEvent _attackCol;
 
     private bool _waitAttack;
+
+    private void Start()
+    {
+        _attackCol.OnEnterCollider.RemoveAllListeners();
+        _attackCol.OnEnterCollider.AddListener(AttackSuccess);
+    }
 
     protected override void ChildAwake()
     {
@@ -20,7 +26,7 @@ public class SnakeAttack : EnemyAttack
         {
             _attackCol.enabled = true;
             _waitAttack = true;
-            _nowDamage = damage;
+            _damage = damage;
             OnAttackFeedBack?.Invoke();
             StartCoroutine(WaitBeforeAttackCoroutine());
         }
@@ -32,14 +38,15 @@ public class SnakeAttack : EnemyAttack
         _waitAttack = false;
     }
 
-    public void AttackSuccess()
+    public void AttackSuccess(Collider col)
     {
+        if (col.gameObject.layer != _targetLayer) return;
         if (_waitAttack == false) return;
         _waitAttack = false;
 
         IHittable hittable = GetTarget().GetComponent<IHittable>();
 
-        hittable?.GetHit(damage: _nowDamage, damagerDealer: gameObject);
+        hittable?.GetHit(damage: _damage, damagerDealer: gameObject);
         _attackCol.enabled = false;
     }
 

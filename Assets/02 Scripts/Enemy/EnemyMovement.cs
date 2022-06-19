@@ -17,7 +17,8 @@ public class EnemyMovement : AgentMovement
 
     protected override void ChildUpdate()
     {
-        if(_aiActionData.haveTargetPos)
+        Debug.Log(_navMeshAgent.destination);
+        if (_aiActionData.haveTargetPos)
         {
             if (_navMeshAgent.velocity.sqrMagnitude >= 0.2f * 0.2f && _navMeshAgent.remainingDistance <= 0.5f)
             {
@@ -32,6 +33,7 @@ public class EnemyMovement : AgentMovement
     public void ImmediateStop()
     {
         _navMeshAgent.isStopped = true;
+        _navMeshAgent.speed = 0f;
     }
 
     public override void ImmediatelyForwardBody()

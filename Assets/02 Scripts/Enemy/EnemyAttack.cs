@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public abstract class EnemyAttack : MonoBehaviour
 {
+    public enum EAttackType { Default, Skill }
+    [SerializeField]
+    protected EAttackType _attackType;
     protected AIBrain _aiBrain;
     protected Enemy _enemy;
 
@@ -13,11 +16,14 @@ public abstract class EnemyAttack : MonoBehaviour
     protected bool _waitBeforeNextAttack;
 
     public bool WaitingForNextAttack => _waitBeforeNextAttack;
+    public EAttackType AttackType => _attackType;
 
     protected bool _isAttacking;
     public bool IsAttacking => _isAttacking;
 
     public UnityEvent OnAttackFeedBack;
+
+    public LayerMask _targetLayer;
 
     private void Awake()
     {

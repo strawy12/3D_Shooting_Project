@@ -410,7 +410,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7228424745849535058}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.2636825, y: 0.5227984, z: -0.57207483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -420,7 +420,7 @@ Transform:
   - {fileID: 555225901}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7228424745849535064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,7 +585,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnSkillButtonPress:
+    m_PersistentCalls:
+      m_Calls: []
   OnFireButtonRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSkillButtonRelease:
     m_PersistentCalls:
       m_Calls: []
   _target: {fileID: 0}
@@ -651,6 +657,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
   _firePos:
   - {fileID: 7228424746977262996}
   - {fileID: 7228424746052587777}

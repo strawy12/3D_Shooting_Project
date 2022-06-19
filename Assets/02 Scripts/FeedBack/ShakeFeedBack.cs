@@ -18,6 +18,8 @@ public class ShakeFeedBack : FeedBack
         // 모든 트윈을 즉시 완료, 완료 트윈 갯수 반환
     }
 
+
+    [ContextMenu("dd")]
     public override void CreateFeedBack()
     {
         CompletePrevFeedBack();

@@ -6,7 +6,7 @@ using DG.Tweening;
 
 public class Enemy : MonoBehaviour, IHittable
 {
-    private EnemyAttack _enemyAttack;
+    private EnemyAttack[] _enemyAttacks;
     private EnemyMovement _enemyMovement;
     //임시 코드 에너미 데이터 만들어야함
     [SerializeField] private int damage;
@@ -29,7 +29,8 @@ public class Enemy : MonoBehaviour, IHittable
 
     private void Awake()
     {
-        _enemyAttack = GetComponent<EnemyAttack>();
+        Health = 1000;
+        _enemyAttacks = GetComponents<EnemyAttack>();
         _enemyMovement = GetComponent<EnemyMovement>();
         _skinnedMeshRederer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -98,7 +99,13 @@ public class Enemy : MonoBehaviour, IHittable
 
     public void PerformAttack()
     {
-        
-        //_enemyAttack.Attack(damage);
+        foreach(var attack in _enemyAttacks)
+        {
+            if(attack.AttackType == EnemyAttack.EAttackType.Default)
+            {
+                attack.Attack(damage);
+                return;
+            }
+        }
     }
 }

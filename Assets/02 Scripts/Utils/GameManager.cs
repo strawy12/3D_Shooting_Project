@@ -9,13 +9,11 @@ public class GameManager : MonoSingleton<GameManager>
     private void Awake()
     {
         new PoolManager(transform);
-    }
 
-    private void Start()
-    {
-        foreach(var pair in _poolingData.list)
+        foreach (var pair in _poolingData.list)
         {
             PoolManager.Inst.CreatePool(pair.prefab, pair.poolCnt);
         }
     }
+
 }

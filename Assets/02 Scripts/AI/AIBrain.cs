@@ -9,13 +9,17 @@ public class AIBrain : MonoBehaviour
     [SerializeField] private AIState _defaultState;
     [SerializeField] private float _stiffenTime;
 
+    public AIActionData ActionData { get; private set; }
+
     private AIState _currentState;
 
     public UnityEvent<Vector3> OnMovementKeyPress;
     public UnityEvent<Vector3> OnChangeBody;
     public UnityEvent<float> OnChangeKeyMoveSpeed;
-   public UnityEvent OnFireButtonPress;
-   public UnityEvent OnFireButtonRelease;
+    public UnityEvent OnFireButtonPress;
+    public UnityEvent OnSkillButtonPress;
+    public UnityEvent OnFireButtonRelease;
+    public UnityEvent OnSkillButtonRelease;
 
     private bool _isChanged;
 
@@ -28,12 +32,13 @@ public class AIBrain : MonoBehaviour
     private void Awake()
     {
         _target = Define.PlayerRef;
+        ActionData = GetComponentInChildren<AIActionData>();
     }
 
     void Start()
     {
         ChangeState(_defaultState);
-        
+
     }
 
     void Update()
@@ -41,7 +46,7 @@ public class AIBrain : MonoBehaviour
         if (_isChanged) return;
         if (_isStiffen) return;
 
-        if(_target == null)
+        if (_target == null)
         {
             OnMovementKeyPress?.Invoke(Vector3.zero);
         }
@@ -53,9 +58,18 @@ public class AIBrain : MonoBehaviour
         OnFireButtonPress?.Invoke();
     }
 
-    public void Move(Vector3 movementDir, float moveSpeed = 0f)
+    public void UseSkill()
+    {
+        OnSkillButtonPress?.Invoke();
+    }
+
+    public void Move(Vector3 movementDir)
     {
         OnMovementKeyPress?.Invoke(movementDir);
+    }
+
+    public void SetSpeed(float moveSpeed)
+    {
         OnChangeKeyMoveSpeed?.Invoke(moveSpeed);
     }
 
@@ -88,6 +102,7 @@ public class AIBrain : MonoBehaviour
     private IEnumerator StiffenCoroutine()
     {
         _isStiffen = true;
+        ChangeState(_currentState);
         yield return new WaitForSeconds(_stiffenTime);
         _isStiffen = false;
     }

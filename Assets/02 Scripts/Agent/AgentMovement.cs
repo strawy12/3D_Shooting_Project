@@ -111,5 +111,7 @@ public abstract class AgentMovement : MonoBehaviour
         _currentVelocity = 0f;
         _currentDir = Vector3.zero;
     }
-
+    public void KnockBack(Vector3 direction, float power, float duration)
+    {
+    }
 }

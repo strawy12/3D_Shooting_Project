@@ -12,6 +12,7 @@ public class BloomAttack : EnemyAttack
     {
         if (_waitBeforeNextAttack == false)
         {
+            Debug.Log(gameObject.name);
             OnAttackFeedBack?.Invoke();
             StartCoroutine(AttackCoroutine(damage));
             StartCoroutine(WaitBeforeAttackCoroutine());
