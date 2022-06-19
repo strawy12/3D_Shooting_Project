@@ -9,7 +9,6 @@ public class PlayerDash : MonoBehaviour
     [SerializeField] private int _maxDashCnt;
     [SerializeField] private float _dashCooltime;
     [SerializeField] private float _dashSpeed;
-    [Range(0.1f, 1f)]
     [SerializeField] private float _destinationBlockedOffset;
     [SerializeField] private float _dashDistance;
     [SerializeField] private float _dashDistanceOffset;
@@ -134,13 +133,13 @@ public class PlayerDash : MonoBehaviour
 
             Vector3 hitPoint = hit.point;
             Vector3 originPos = currentPos;
-            originPos.y = 0f
+            originPos.y = 0f;
             hitPoint.y = 0f;
 
-            float distance = Vector3.Distance(currentPos, hitPoint);
+            float distance = Vector3.Distance(originPos, hitPoint);
 
-            destination = currentPos + transform.forward *( distance - _dashDistanceOffset);
-
+            destination = currentPos + transform.forward *( distance - _destinationBlockedOffset);
+            Debug.Log("dd");
         }
         else
         {
