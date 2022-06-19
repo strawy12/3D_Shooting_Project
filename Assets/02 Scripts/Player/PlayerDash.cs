@@ -126,27 +126,27 @@ public class PlayerDash : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 destination;
-
-        if (Physics.Raycast(transform.position, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer))
+        Vector3 pos = transform.position + Vector3.up * 0.5f;
+        if (Physics.Raycast(pos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer))
         {
+
             _isBlocked = true;
 
             Vector3 hitPoint = hit.point;
+            Vector3 originPos = currentPos;
+            originPos.y = 0f
+            hitPoint.y = 0f;
 
-            hitPoint.x += (hitPoint.x * _destinationBlockedOffset) * (hitPoint.x < currentPos.x ? 1f : -1f);
-            hitPoint.z += (hitPoint.z * _destinationBlockedOffset) * (hitPoint.z < currentPos.z ? 1f : -1f);
+            float distance = Vector3.Distance(currentPos, hitPoint);
 
-            destination = hitPoint;
+            destination = currentPos + transform.forward *( distance - _dashDistanceOffset);
+
         }
         else
         {
             _isBlocked = false;
             destination = currentPos + targetDir.normalized * _dashDistance;
         }
-
-        Debug.Log($"currentPos : {currentPos}");
-        Debug.Log($"destination : {destination}");
-        Debug.Log($"currentPos + destination : {currentPos + destination}");
 
 
 
