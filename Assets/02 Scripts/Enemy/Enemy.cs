@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour, IHittable
     private EnemyAttack[] _enemyAttacks;
     private EnemyMovement _enemyMovement;
     //임시 코드 에너미 데이터 만들어야함
-    [SerializeField] private int damage;
+    
     [SerializeField] private float _hitEffectLifeTime;
     [SerializeField] private Transform _hitEffectPos;
     [SerializeField] private Material _hitMat;
@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour, IHittable
     private SkinnedMeshRenderer _skinnedMeshRederer;
 
     private bool _isDead = false;
-
+    private MonsterData _monsterData;
 
     public bool IsEnemy { get; set; }
     public int Health { get; private set; }
@@ -27,9 +27,19 @@ public class Enemy : MonoBehaviour, IHittable
     public UnityEvent OnDie;
     public UnityEvent OnGetHit;
 
+    private bool _init;
     private void Awake()
     {
+        Init();
+    }
+
+    public void Init()
+    {
         Health = 1000;
+
+        if (_init) return;
+
+        _init = true;
         _enemyAttacks = GetComponents<EnemyAttack>();
         _enemyMovement = GetComponent<EnemyMovement>();
         _skinnedMeshRederer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -42,9 +52,7 @@ public class Enemy : MonoBehaviour, IHittable
 
         _hitMat = _skinnedMeshRederer.materials[1];
         _hitMat.SetFloat("_FresnelPower", 0f);
-
     }
-
     public void GetHit(int damage, GameObject damagerDealer)
     {
         float critical = Random.value;
@@ -77,6 +85,11 @@ public class Enemy : MonoBehaviour, IHittable
         }
     }
 
+    public void SetMonsterData(MonsterData data)
+    {
+        _monsterData = new MonsterData(data);
+    }
+
     private void ShowHitOutline()
     {
         DOTween.Kill(this);
@@ -99,11 +112,11 @@ public class Enemy : MonoBehaviour, IHittable
 
     public void PerformAttack()
     {
-        foreach(var attack in _enemyAttacks)
+        foreach (var attack in _enemyAttacks)
         {
-            if(attack.AttackType == EnemyAttack.EAttackType.Default)
+            if (attack.AttackType == EnemyAttack.EAttackType.Default)
             {
-                attack.Attack(damage);
+                attack.Attack(_monsterData.attackDamage);
                 return;
             }
         }

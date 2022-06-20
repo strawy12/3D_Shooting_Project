@@ -44,7 +44,6 @@ public class HoshiTan : PoolableMono
         if(other.gameObject.layer == 6)
         {
             Vector3 pos = transform.position;
-            pos.y = 0f;
             Instantiate(_hoshiTanEffect, pos, Quaternion.identity);
             Destroy(gameObject);
         }
