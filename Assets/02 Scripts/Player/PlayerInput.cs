@@ -46,7 +46,7 @@ public class PlayerInput : MonoBehaviour
 
     private void GetFireInput()
     {
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             OnFireButtonPress?.Invoke();
         }
@@ -59,7 +59,7 @@ public class PlayerInput : MonoBehaviour
 
     private void GetJumpInput()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             OnJumpButtonPressDown?.Invoke();
         }
@@ -74,15 +74,12 @@ public class PlayerInput : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.E))
         {
-            if (Input.GetMouseButton(1))
-            {
-                OnThrowCancel?.Invoke();
-            }
+            OnThrowButtonRelease?.Invoke();
+        }
 
-            else
-            {
-                OnThrowButtonRelease?.Invoke();
-            }
+        if (Input.GetMouseButton(1))
+        {
+            OnThrowCancel?.Invoke();
         }
 
 
