@@ -17,7 +17,6 @@ public class EnemyMovement : AgentMovement
 
     protected override void ChildUpdate()
     {
-        Debug.Log(_navMeshAgent.destination);
         if (_aiActionData.haveTargetPos)
         {
             if (_navMeshAgent.velocity.sqrMagnitude >= 0.2f * 0.2f && _navMeshAgent.remainingDistance <= 0.5f)

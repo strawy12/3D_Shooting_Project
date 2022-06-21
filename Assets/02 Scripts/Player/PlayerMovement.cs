@@ -8,6 +8,9 @@ public class PlayerMovement : AgentMovement
     protected Collider _collider;
 
     private bool _isDash;
+    private Vector3 _forward;
+
+    private bool _isJump;
 
     protected override void ChildAwake()
     {
@@ -26,6 +29,12 @@ public class PlayerMovement : AgentMovement
 
         _rigid.velocity = velocity;
         ChangeBody();
+
+        if(_isJump && IsGround())
+        {
+            _isJump = false;
+        }
+  
     }
 
     public void ChangeDashState(bool isDash)
@@ -47,10 +56,12 @@ public class PlayerMovement : AgentMovement
     public void Jump()
     {
         if (_isDash) return;
+        if (_isJump) return;
 
         if (IsGround())
         {
             _rigid.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+            _isJump = true;
         }
     }
 
@@ -65,6 +76,7 @@ public class PlayerMovement : AgentMovement
     {
         Vector3 pos = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z);
         Vector3 size = _collider.bounds.size * 0.5f;
+        size.y = 0.1f;
         return Physics.OverlapBox(pos, size, Quaternion.identity).Length > 1;
     }
 

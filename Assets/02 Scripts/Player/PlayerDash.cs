@@ -125,8 +125,12 @@ public class PlayerDash : MonoBehaviour
     {
         RaycastHit hit;
         Vector3 destination;
-        Vector3 pos = transform.position + Vector3.up * 0.5f;
-        if (Physics.Raycast(pos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer))
+        Vector3 topPos = transform.position + Vector3.up * 1.5f;
+        Vector3 middlePos = transform.position + Vector3.up * 0.9f;
+        Vector3 bottomPos = transform.position + Vector3.up * 0f;
+        if (Physics.Raycast(bottomPos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer) ||
+            Physics.Raycast(middlePos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer) ||
+            Physics.Raycast(topPos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer))
         {
 
             _isBlocked = true;
@@ -137,7 +141,6 @@ public class PlayerDash : MonoBehaviour
             hitPoint.y = 0f;
 
             float distance = Vector3.Distance(originPos, hitPoint);
-
             destination = currentPos + transform.forward *( distance - _destinationBlockedOffset);
             Debug.Log("dd");
         }

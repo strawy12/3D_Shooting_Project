@@ -15,6 +15,6 @@ MonoBehaviour:
   moveMaxSpeed: 5
   runMaxSpeed: 10
   rotateMoveSpeed: 80
-  turnSpeed: 5
+  turnSpeed: 3
   acceleration: 50
   deAcceleration: 50

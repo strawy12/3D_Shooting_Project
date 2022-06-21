@@ -22,9 +22,8 @@ public class MonsterSpawnInfo
     public Enemy enemy;
     public MonsterData monsterData;
     public int spawnCnt;
-    public float nextSpawDelay;
+    public float nextSpawnDelay;
 
-}
 }
 
 [CreateAssetMenu(menuName = "SO/System/MonsterSpawnInfoDataSO")]
@@ -40,6 +39,5 @@ public class MonsterSpawnInfoDataSO : ScriptableObject
 
     public int Count { get => monsterSpawnInfoDataList.Count; }
 
-    public bool useDelay;
     public float nextElementSpawnDelay;
 }

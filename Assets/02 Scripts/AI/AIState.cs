@@ -55,10 +55,8 @@ public class AIState : MonoBehaviour
             }
             else
             {
-
                 if (transition.Negetive != null)
                 {
-
                     _aiBrain.ChangeState(transition.Negetive);
                     break;
                 }

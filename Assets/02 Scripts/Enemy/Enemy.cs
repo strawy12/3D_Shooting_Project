@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 
-public class Enemy : MonoBehaviour, IHittable
+public class Enemy : PoolableMono, IHittable
 {
     private EnemyAttack[] _enemyAttacks;
     private EnemyMovement _enemyMovement;
@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour, IHittable
 
     public UnityEvent OnDie;
     public UnityEvent OnGetHit;
+    public UnityEvent OnSpawn;
 
     private bool _init;
     private void Awake()
@@ -90,6 +91,12 @@ public class Enemy : MonoBehaviour, IHittable
         _monsterData = new MonsterData(data);
     }
 
+    public void SpawnEnemy(Vector3 pos)
+    {
+        transform.position = pos;
+        OnSpawn?.Invoke();
+    }
+
     private void ShowHitOutline()
     {
         DOTween.Kill(this);
@@ -116,9 +123,22 @@ public class Enemy : MonoBehaviour, IHittable
         {
             if (attack.AttackType == EnemyAttack.EAttackType.Default)
             {
-                attack.Attack(_monsterData.attackDamage);
+               // attack.Attack(_monsterData.attackDamage);
                 return;
             }
         }
+    }
+
+    public void EnemyDead()
+    {
+        if(_monsterData.isLastMonster)
+        {
+            EventManager.TriggerEvent(Constant.ALL_KILL_MONSTER);
+        }
+    }
+
+    public override void Reset()
+    {
+
     }
 }

@@ -148,7 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 748e59426fa177c449110a247c581751, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
   _hitEffectLifeTime: 0.5
   _hitEffectPos: {fileID: 5595852043383600114}
   _hitMat: {fileID: 2100000, guid: 1273576658f33c64ab10c181c931774f, type: 2}
@@ -182,6 +181,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnSpawn:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4696557013964851511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -272,7 +274,13 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnSkillButtonPress:
+    m_PersistentCalls:
+      m_Calls: []
   OnFireButtonRelease:
+    m_PersistentCalls:
+      m_Calls: []
+  OnSkillButtonRelease:
     m_PersistentCalls:
       m_Calls: []
   _target: {fileID: 0}
@@ -288,6 +296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbccb1b0f7f3f1344b2458bb84c25fec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackType: 0
   attackDelay: 1
   OnAttackFeedBack:
     m_PersistentCalls:
@@ -901,7 +910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4696557015227297573}
   - component: {fileID: 4696557015227297570}
-  - component: {fileID: 4696557015227297571}
+  - component: {fileID: 2082983683}
   m_Layer: 9
   m_Name: ToIdle
   m_TagString: Untagged
@@ -936,11 +945,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _decisionList:
-  - {fileID: 4696557015227297571}
+  - {fileID: 0}
   _positiveState: {fileID: 4696557014289916597}
   _negetiveState: {fileID: 0}
   _operatorType: 0
---- !u!114 &4696557015227297571
+--- !u!114 &2082983683
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -949,11 +958,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4696557015227297572}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d17b82d4a44a94886681a754dc7ae8, type: 3}
+  m_Script: {fileID: 11500000, guid: 36f2ec587a50d4f44ab5a71221618401, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isNegetive: 0
-  _value: 70
+  _isNegetive: 1
+  distance: 5
 --- !u!1 &4696557015452311485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,7 +1125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803a9bb305797694f87e2dc80fb881a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chaseMaxSpeed: 5
 --- !u!1 &4696557015548622561
 GameObject:
   m_ObjectHideFlags: 0
@@ -1168,6 +1176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   haveTargetPos: 0
   attack: 0
+  waitingAttack: 0
   targetSpotted: 0
   arrived: 0
   isStiffen: 0

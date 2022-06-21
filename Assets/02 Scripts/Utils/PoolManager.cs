@@ -30,6 +30,7 @@ public class PoolManager
 
         PoolableMono item = _pools[prefabName].Pop();
         item.Reset();
+        item.transform.SetParent(null);
         return item;
     }
 
