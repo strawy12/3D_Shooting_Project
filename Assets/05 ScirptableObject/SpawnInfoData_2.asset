@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d680826380acc6e4187b26b11a908d9c, type: 3}
+  m_Name: SpawnInfoData_2
+  m_EditorClassIdentifier: 
+  monsterSpawnInfoDataList:
+  - enemy: {fileID: 4696557013964851509, guid: 406222bb62e918a4a8bd572e844ccd1c, type: 3}
+    monsterData:
+      attackDamage: 5
+      health: 5
+      isLastMonster: 0
+    spawnCnt: 5
+    nextSpawnDelay: 5
+  nextElementSpawnDelay: 3

@@ -66,7 +66,6 @@ public class GameManager : MonoSingleton<GameManager>
             info = _currentSpawnPair.monsterSpawnInfoDataSO[i];
             for (int j = 0; j < info.spawnCnt; j++)
             {
-                Debug.Log("11");
                 enemy = PoolManager.Inst.Pop(info.enemy.name) as Enemy;
                 enemy.SetMonsterData(info.monsterData);
                 enemy.transform.position = _currentSpawnPair.spawnPos.position;
@@ -75,19 +74,17 @@ public class GameManager : MonoSingleton<GameManager>
 
 
                 yield return new WaitForSeconds(info.nextSpawnDelay);
-                Debug.Log("22");
             }
-            Debug.Log("33");
             yield return new WaitForSeconds(_currentSpawnPair.monsterSpawnInfoDataSO.nextElementSpawnDelay);
-            Debug.Log("44");
 
         }
-        Debug.Log("55");
 
         _currentSpawnPair.isSpawning = false;
 
         if (_currentSpawnPair.changeType == ChangeSpawnPairType.Delay)
         {
+            yield return new WaitForSeconds(_currentSpawnPair.spawnDelay);
+
             SpawnMonster();
         }
     }

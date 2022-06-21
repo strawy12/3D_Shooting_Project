@@ -17,14 +17,6 @@ public class EnemyMovement : AgentMovement
 
     protected override void ChildUpdate()
     {
-        if (_aiActionData.haveTargetPos)
-        {
-            if (_navMeshAgent.velocity.sqrMagnitude >= 0.2f * 0.2f && _navMeshAgent.remainingDistance <= 0.5f)
-            {
-                _aiActionData.arrived = true;
-            }
-        }
-
         _navMeshAgent.speed = _currentVelocity;
         _navMeshAgent.SetDestination(transform.position + _currentDir);
     }

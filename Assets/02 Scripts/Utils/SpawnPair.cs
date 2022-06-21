@@ -18,4 +18,5 @@ public class SpawnPair
     public Transform spawnPos;
     public MonsterSpawnInfoDataSO monsterSpawnInfoDataSO;
     public ChangeSpawnPairType changeType;
+    public float spawnDelay;
 }

@@ -31,7 +31,7 @@ public class PatrolAction : AIAction
     {
         if (_aiActionData.arrived) return;
 
-        if(Vector3.Distance(transform.position, _targetPos) <= 0.5f)
+        if(Vector3.Distance(transform.position, _targetPos) <= 1f)
         {
             _aiActionData.arrived = true;
         }
