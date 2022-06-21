@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Events;
 using DG.Tweening;
 
@@ -15,8 +16,11 @@ public class Enemy : PoolableMono, IHittable
     [SerializeField] private Material _hitMat;
 
     private SkinnedMeshRenderer _skinnedMeshRederer;
+    private NavMeshAgent _navMeshAgent;
 
     private bool _isDead = false;
+
+    private bool _isSpawnInit;
     private MonsterData _monsterData;
 
     public bool IsEnemy { get; set; }
@@ -36,24 +40,32 @@ public class Enemy : PoolableMono, IHittable
 
     public void Init()
     {
-        Health = 1000;
+        if (!_init)
+        {
+            _init = true;
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _navMeshAgent.enabled = false;
+            _enemyAttacks = GetComponents<EnemyAttack>();
+            _enemyMovement = GetComponent<EnemyMovement>();
+            _skinnedMeshRederer = GetComponentInChildren<SkinnedMeshRenderer>();
 
-        if (_init) return;
+            Material[] temp = new Material[2];
+            temp[0] = _skinnedMeshRederer.material;
+            temp[1] = _hitMat;
 
-        _init = true;
-        _enemyAttacks = GetComponents<EnemyAttack>();
-        _enemyMovement = GetComponent<EnemyMovement>();
-        _skinnedMeshRederer = GetComponentInChildren<SkinnedMeshRenderer>();
+            _skinnedMeshRederer.materials = temp;
 
-        Material[] temp = new Material[2];
-        temp[0] = _skinnedMeshRederer.material;
-        temp[1] = _hitMat;
-
-        _skinnedMeshRederer.materials = temp;
-
-        _hitMat = _skinnedMeshRederer.materials[1];
-        _hitMat.SetFloat("_FresnelPower", 0f);
+            _hitMat = _skinnedMeshRederer.materials[1];
+            _hitMat.SetFloat("_FresnelPower", 0f);
+        }
     }
+
+    public void SpawnSetting()
+    {
+        Health = 1000;
+        _navMeshAgent.enabled = true;
+    }
+
     public void GetHit(int damage, GameObject damagerDealer)
     {
         float critical = Random.value;

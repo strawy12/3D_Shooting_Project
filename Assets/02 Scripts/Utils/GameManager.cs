@@ -27,7 +27,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Start()
     {
-        SpawnMonster();
+      SpawnMonster();
     }
 
     private void SpawnMonster()
@@ -54,6 +54,7 @@ public class GameManager : MonoSingleton<GameManager>
         SpawnMonster();
     }
 
+    int loopCnt = 0;
     private IEnumerator SpawnMonsterCoroutine()
     {
         Enemy enemy = null;
@@ -65,19 +66,23 @@ public class GameManager : MonoSingleton<GameManager>
             info = _currentSpawnPair.monsterSpawnInfoDataSO[i];
             for (int j = 0; j < info.spawnCnt; j++)
             {
+                Debug.Log("11");
                 enemy = PoolManager.Inst.Pop(info.enemy.name) as Enemy;
                 enemy.SetMonsterData(info.monsterData);
                 enemy.transform.position = _currentSpawnPair.spawnPos.position;
                 enemy.transform.rotation = _currentSpawnPair.spawnPos.rotation;
-                Debug.Log(enemy.transform.position);
-                Debug.Log(_currentSpawnPair.spawnPos.position);
+                enemy.SpawnSetting();
+
 
                 yield return new WaitForSeconds(info.nextSpawnDelay);
+                Debug.Log("22");
             }
-            Debug.Log(12);
-
+            Debug.Log("33");
             yield return new WaitForSeconds(_currentSpawnPair.monsterSpawnInfoDataSO.nextElementSpawnDelay);
+            Debug.Log("44");
+
         }
+        Debug.Log("55");
 
         _currentSpawnPair.isSpawning = false;
 

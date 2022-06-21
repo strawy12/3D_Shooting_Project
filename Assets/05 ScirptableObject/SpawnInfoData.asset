@@ -19,5 +19,12 @@ MonoBehaviour:
       health: 5
       isLastMonster: 0
     spawnCnt: 5
-    nextSpawnDelay: 0.5
+    nextSpawnDelay: 5
+  - enemy: {fileID: 4696557013964851509, guid: 406222bb62e918a4a8bd572e844ccd1c, type: 3}
+    monsterData:
+      attackDamage: 5
+      health: 5
+      isLastMonster: 0
+    spawnCnt: 5
+    nextSpawnDelay: 1
   nextElementSpawnDelay: 3
