@@ -21,10 +21,18 @@ public class EnemyMovement : AgentMovement
         _navMeshAgent.SetDestination(transform.position + _currentDir);
     }
 
-    public void ImmediateStop()
+    public override void StopImmediatelly()
     {
+        base.StopImmediatelly();
         _navMeshAgent.isStopped = true;
         _navMeshAgent.speed = 0f;
+    }
+
+    public override void StartMove()
+    {
+        base.StartMove();
+
+        _navMeshAgent.isStopped = false;
     }
 
     public override void ImmediatelyForwardBody()

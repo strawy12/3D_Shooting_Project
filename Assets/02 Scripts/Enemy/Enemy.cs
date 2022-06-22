@@ -20,13 +20,13 @@ public class Enemy : PoolableMono, IHittable
 
     private bool _isDead = false;
 
-    private bool _isSpawnInit;
     private MonsterData _monsterData;
 
     public bool IsEnemy { get; set; }
-    public int Health { get; private set; }
     public Vector3 HitPoint { get; set; }
     public int HitCount { get; set; }
+
+    public bool CanAttack { get; set; }
 
     public UnityEvent OnDie;
     public UnityEvent OnGetHit;
@@ -60,16 +60,12 @@ public class Enemy : PoolableMono, IHittable
         }
     }
 
-    public void SpawnSetting()
-    {
-        Health = 1000;
-        _navMeshAgent.enabled = true;
-    }
-
     public void GetHit(int damage, GameObject damagerDealer)
     {
         float critical = Random.value;
         bool isCritical = false;
+
+        if (_isDead) return;
 
         //if (critical <= GameManager.Inst.criticalChance)
         //{
@@ -80,22 +76,28 @@ public class Enemy : PoolableMono, IHittable
         //    isCritical = true;
         //}
 
-        Health -= damage;
+        _monsterData.health -= damage;
 
-        OnGetHit?.Invoke();
         ShowHitOutline();
-        GenerateHitEffect();
-
+        GenerateHitEffect(damage);
         //DamagePopup popup = PoolManager.Instance.Pop("DamagePopup") as DamagePopup;
         //popup.Setup(damage, transform.position + new Vector3(0, 0.5f, 0), isCritical);
 
-        if (Health <= 0f)
+        if (_monsterData.health <= 0f)
         {
             _isDead = true;
             _enemyMovement.StopImmediatelly();
-            _enemyMovement.enabled = false;
+            CanAttack = false;
+            EnemyDead();
             OnDie?.Invoke();
         }
+
+        else
+        {
+            OnGetHit?.Invoke();
+        }
+
+
     }
 
     public void SetMonsterData(MonsterData data)
@@ -103,10 +105,11 @@ public class Enemy : PoolableMono, IHittable
         _monsterData = new MonsterData(data);
     }
 
-    public void SpawnEnemy(Vector3 pos)
+    public void SpawnEnemy()
     {
-        transform.position = pos;
         OnSpawn?.Invoke();
+        _navMeshAgent.enabled = true;
+        _enemyMovement.StartMove();
     }
 
     private void ShowHitOutline()
@@ -122,20 +125,20 @@ public class Enemy : PoolableMono, IHittable
     }
 
 
-    public void GenerateHitEffect()
+    public void GenerateHitEffect(int damage)
     {
-        ImpactEffect hitEffect = PoolManager.Inst.Pop($"HitEffect_{HitCount}") as ImpactEffect;
-        hitEffect.SetPositionAndRotation(_hitEffectPos.position, Quaternion.LookRotation(transform.forward));
-        hitEffect.StartEffect();
+        GameManager.Inst.UI.GenerateDamagePopup(_hitEffectPos.position, damage, false);
     }
 
     public void PerformAttack()
     {
+        if (_isDead) return;
+
         foreach (var attack in _enemyAttacks)
         {
             if (attack.AttackType == EnemyAttack.EAttackType.Default)
             {
-               // attack.Attack(_monsterData.attackDamage);
+                attack.Attack(_monsterData.attackDamage);
                 return;
             }
         }
@@ -147,10 +150,27 @@ public class Enemy : PoolableMono, IHittable
         {
             EventManager.TriggerEvent(Constant.ALL_KILL_MONSTER);
         }
+
+        StartCoroutine(DeadDelay());
+    }
+
+    private IEnumerator DeadDelay()
+    {
+        yield return new WaitForSeconds(3f);
+
+        PoolManager.Inst.Push(this);
+    }
+
+    public void SetPositionAndRotation(Vector3 pos, Quaternion rot)
+    {
+        transform.SetPositionAndRotation(pos, rot);
     }
 
     public override void Reset()
     {
+        CanAttack = true;
+        _isDead = false;
+        _skinnedMeshRederer.material.DOFade(1f, 0f);
 
     }
 }

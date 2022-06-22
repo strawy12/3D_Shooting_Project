@@ -9,15 +9,11 @@ public class SnakeAttack : EnemyAttack
 
     private bool _waitAttack;
 
-    private void Start()
-    {
-        _attackCol.OnEnterCollider.RemoveAllListeners();
-        _attackCol.OnEnterCollider.AddListener(AttackSuccess);
-    }
-
     protected override void ChildAwake()
     {
         _attackCol.enabled = false;
+
+        _attackCol.OnEnterCollider += (AttackSuccess);
     }
 
     public override void Attack(int damage)
@@ -39,8 +35,8 @@ public class SnakeAttack : EnemyAttack
     }
 
     public void AttackSuccess(Collider col)
-    {
-        if (col.gameObject.layer != _targetLayer) return;
+    { 
+        if ((1 << col.gameObject.layer & _targetLayer) == 0) return;
         if (_waitAttack == false) return;
         _waitAttack = false;
 

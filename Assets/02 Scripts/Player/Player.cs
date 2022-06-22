@@ -33,6 +33,8 @@ public class Player : MonoBehaviour, IHittable
 
     public int HitCount { get; set; }
 
+    public bool CanAttack { get; set; }
+
     [SerializeField] private Transform _hitEffectPos;
 
     //넉백 처리를 위한 에이전트 무브먼트 가져오기

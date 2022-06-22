@@ -35,6 +35,8 @@ public class HoshiTan : PoolableMono
         _rigid.useGravity = true;
         _rigid.AddForce(dir* force);
         _rigid.AddTorque(dir* force);
+
+        Debug.Log(force);
     }
 
 

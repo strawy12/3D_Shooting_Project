@@ -11,6 +11,22 @@ public class GameManager : MonoSingleton<GameManager>
 
     private SpawnPair _currentSpawnPair;
 
+    private UIManager _uiManager;
+
+    public UIManager UI
+    {
+        get
+        {
+            if (_uiManager == null)
+            {
+                _uiManager = GetComponent<UIManager>();
+            }
+
+            return _uiManager;
+        }
+    }
+
+
     private void Awake()
     {
         new PoolManager(transform);
@@ -21,13 +37,18 @@ public class GameManager : MonoSingleton<GameManager>
         }
 
         // EventManager Enemy 죽을때마다 실행시켜서 여기서 작동
-        EventManager.StartListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
 
+        if (_uiManager == null)
+        {
+            _uiManager = GetComponent<UIManager>();
+        }
     }
 
     private void Start()
     {
-      SpawnMonster();
+        EventManager.StartListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
+
+        SpawnMonster();
     }
 
     private void SpawnMonster()
@@ -68,9 +89,8 @@ public class GameManager : MonoSingleton<GameManager>
             {
                 enemy = PoolManager.Inst.Pop(info.enemy.name) as Enemy;
                 enemy.SetMonsterData(info.monsterData);
-                enemy.transform.position = _currentSpawnPair.spawnPos.position;
-                enemy.transform.rotation = _currentSpawnPair.spawnPos.rotation;
-                enemy.SpawnSetting();
+                enemy.SetPositionAndRotation(_currentSpawnPair.spawnPos.position, _currentSpawnPair.spawnPos.rotation);
+                enemy.SpawnEnemy();
 
 
                 yield return new WaitForSeconds(info.nextSpawnDelay);

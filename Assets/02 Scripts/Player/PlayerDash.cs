@@ -142,7 +142,6 @@ public class PlayerDash : MonoBehaviour
 
             float distance = Vector3.Distance(originPos, hitPoint);
             destination = currentPos + transform.forward *( distance - _destinationBlockedOffset);
-            Debug.Log("dd");
         }
         else
         {

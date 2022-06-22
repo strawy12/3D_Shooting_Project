@@ -105,12 +105,18 @@ public abstract class AgentMovement : MonoBehaviour
         _movementData.moveMaxSpeed = _originWalkSpeed;
     }
 
-    public void StopImmediatelly()
+    public virtual void StopImmediatelly()
     {
         _isStop = true;
         _currentVelocity = 0f;
         _currentDir = Vector3.zero;
     }
+
+    public virtual void StartMove()
+    {
+        _isStop = false;
+    }
+
     public void KnockBack(Vector3 direction, float power, float duration)
     {
     }

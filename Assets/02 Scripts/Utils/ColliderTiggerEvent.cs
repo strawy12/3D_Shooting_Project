@@ -1,13 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ColliderTiggerEvent : MonoBehaviour
 {
-    public UnityEvent<Collider> OnEnterCollider;
-    public UnityEvent<Collider> OnStayCollider;
-    public UnityEvent<Collider> OnExitCollider;
+    public Action<Collider> OnEnterCollider;
+    public Action<Collider> OnStayCollider;
+    public Action<Collider> OnExitCollider;
 
     private void OnTriggerEnter(Collider other)
     {

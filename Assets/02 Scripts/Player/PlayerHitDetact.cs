@@ -25,23 +25,6 @@ public class PlayerHitDetact : MonoBehaviour
     public void DetactSetting(int attackCnt)
     {
         _attackCnt = attackCnt;
-
-        switch (_attackCnt)
-        {
-            case 1:
-                _angle = 210f;
-                break;
-
-            case 2:
-                _angle = 360f;
-                break;
-
-            case 3:
-    
-                _angle = 110f;
-                break;
-        }
-
         StartCoroutine(DelayDetact());
     }
 
@@ -75,11 +58,11 @@ public class PlayerHitDetact : MonoBehaviour
                 RaycastHit hit;
                 Physics.Raycast(currentPos, directionToTarget, out hit, distanceToTarget);
 
-                Debug.DrawRay(currentPos, directionToTarget * distanceToTarget, Color.green, 3f);
-
                 if (hit.collider != null && hit.transform.root.gameObject.layer == 9)
                 {
                     IHittable hitTarget = hit.transform.root.GetComponent<IHittable>();
+
+                    if (hitTarget.CanAttack == false) return;
 
                     hitTarget.HitPoint = hit.point;
                     hitTarget.HitCount = _attackCnt;

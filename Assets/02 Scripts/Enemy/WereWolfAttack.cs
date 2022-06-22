@@ -11,8 +11,7 @@ public class WereWolfAttack : EnemyAttack
 
     private void Start()
     {
-        _attackCol.OnEnterCollider.RemoveAllListeners();
-        _attackCol.OnEnterCollider.AddListener(AttackSuccess);
+        _attackCol.OnEnterCollider += (AttackSuccess);
     }
     public override void Attack(int damage)
     {
@@ -34,6 +33,7 @@ public class WereWolfAttack : EnemyAttack
 
     public void AttackSuccess(Collider col)
     {
+        Debug.Log(12);
         if (((1 << col.gameObject.layer) & _targetLayer) == 0) return;
 
         if (_waitAttack == false) return;
