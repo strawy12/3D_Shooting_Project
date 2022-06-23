@@ -12,7 +12,7 @@ public class HoshiTan : PoolableMono
 
     public void LateUpdate()
     {
-        if(!_isThrow)
+        if(!_isThrow && _parentTrs != null)
         {
             transform.position = _parentTrs.position;
             transform.rotation = _parentTrs.rotation;
@@ -47,12 +47,20 @@ public class HoshiTan : PoolableMono
             Vector3 pos = transform.position;
           HoshiTanEffect effect =  PoolManager.Inst.Pop("HoshiTanEffect") as HoshiTanEffect;
             effect.StartEffect(_duration);
+            effect.transform.position = pos;
             PoolManager.Inst.Push(this);
         }
     }
 
     public override void Reset()
     {
+        _isThrow = false;
+        _parentTrs = null;
+        if (_rigid == null)
+        {
+            _rigid = GetComponent<Rigidbody>();
+        }
+
         _rigid.useGravity = false;
     }
 

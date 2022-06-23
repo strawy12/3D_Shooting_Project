@@ -10,7 +10,7 @@ public class Enemy : PoolableMono, IHittable
     private EnemyAttack[] _enemyAttacks;
     private EnemyMovement _enemyMovement;
     //임시 코드 에너미 데이터 만들어야함
-    
+
     [SerializeField] private float _hitEffectLifeTime;
     [SerializeField] private Transform _hitEffectPos;
     [SerializeField] private Material _hitMat;
@@ -31,6 +31,9 @@ public class Enemy : PoolableMono, IHittable
     public UnityEvent OnDie;
     public UnityEvent OnGetHit;
     public UnityEvent OnSpawn;
+
+    private float _additionalDamageFactor = 1f;
+    private Coroutine _hoshiTanEffectCoroutine = null;
 
     private bool _init;
     private void Awake()
@@ -76,7 +79,7 @@ public class Enemy : PoolableMono, IHittable
         //    isCritical = true;
         //}
 
-        _monsterData.health -= damage;
+        _monsterData.health -=  (int)(damage * _additionalDamageFactor);
 
         ShowHitOutline();
         GenerateHitEffect(damage);
@@ -146,7 +149,7 @@ public class Enemy : PoolableMono, IHittable
 
     public void EnemyDead()
     {
-        if(_monsterData.isLastMonster)
+        if (_monsterData.isLastMonster)
         {
             EventManager.TriggerEvent(Constant.ALL_KILL_MONSTER);
         }
@@ -172,5 +175,37 @@ public class Enemy : PoolableMono, IHittable
         _isDead = false;
         _skinnedMeshRederer.material.DOFade(1f, 0f);
 
+    }
+
+    public void GetHoshiTanEffect(float duration)
+    {
+        _additionalDamageFactor = 1.5f;
+
+        if (_hoshiTanEffectCoroutine != null)
+        {
+            StopCoroutine(_hoshiTanEffectCoroutine);
+            _hoshiTanEffectCoroutine = null;
+        }
+
+        _hoshiTanEffectCoroutine = StartCoroutine(HoshiTanEffectDelay(duration));
+    }
+
+    private IEnumerator HoshiTanEffectDelay(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        _additionalDamageFactor = 1f;
+    }
+
+    public void GetHitTrapEffect(float duration)
+    {
+        _enemyMovement.StopImmediatelly();
+        _hoshiTanEffectCoroutine = StartCoroutine(TrapEffectDelay(duration));
+    }
+    private IEnumerator TrapEffectDelay(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        _enemyMovement.StartMove();
     }
 }

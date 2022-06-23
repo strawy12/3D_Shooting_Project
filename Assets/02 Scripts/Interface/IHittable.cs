@@ -9,4 +9,6 @@ public interface IHittable
     public Vector3 HitPoint { get; set; }
     public int HitCount { get; set; }
     public void GetHit(int damage, GameObject damagerDealer);
+
+    public void GetHoshiTanEffect(float duration);
 }

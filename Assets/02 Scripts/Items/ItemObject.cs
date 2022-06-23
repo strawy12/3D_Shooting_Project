@@ -7,14 +7,15 @@ public abstract class ItemObject : PoolableMono
 {
     [SerializeField] protected float _moveYPos;
     [SerializeField] protected float _speed;
+    [SerializeField] private float _rotateSpped;
 
     private Vector3 _originPos;
 
     public UnityEvent OnTriggerEnter;
-     
+
     private void Start()
     {
-        _originPos = transform.position;    
+        _originPos = transform.position;
     }
 
     protected virtual void Update()
@@ -27,6 +28,11 @@ public abstract class ItemObject : PoolableMono
         pos.y += yPos;
 
         transform.position = pos;
+
+        Vector3 angle = transform.eulerAngles;
+        angle.y += Time.deltaTime * _rotateSpped;
+
+        transform.rotation = Quaternion.Euler(angle);
     }
 
 

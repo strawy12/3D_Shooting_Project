@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IHittable
             _health = value;
         }
     }
+    [SerializeField] private float _recoverySpeed;
 
     private bool _isDead = false;
 
@@ -37,6 +38,8 @@ public class Player : MonoBehaviour, IHittable
 
     [SerializeField] private Transform _hitEffectPos;
 
+    private BuffEffect _currentBuffEffect;
+
     //넉백 처리를 위한 에이전트 무브먼트 가져오기
     private PlayerMovement _playerMovement;
 
@@ -51,11 +54,11 @@ public class Player : MonoBehaviour, IHittable
     }
     private void OnTriggerEnter(Collider other) // 아이템용
     {
-        if(other.gameObject.CompareTag("Item"))
+        if (other.gameObject.CompareTag("Item"))
         {
-            IItem item = other.transform.GetComponent<IItem>();
+            IItem item = other.transform.GetComponentInParent<IItem>();
 
-            item.TakeAction();
+            item.TakeAction();  
         }
     }
 
@@ -83,4 +86,38 @@ public class Player : MonoBehaviour, IHittable
     {
         _playerMovement.KnockBack(direction, power, duration);
     }
+
+    public void GetHoshiTanEffect(float duration)
+    {
+        BuffEffect effect = PoolManager.Inst.Pop("HealEffect") as BuffEffect;
+        _currentBuffEffect?.ImmediatelyStop();
+        effect.transform.SetParent(_hitEffectPos);
+        effect.transform.localPosition = Vector3.zero;
+        effect.gameObject.SetActive(true);
+        _currentBuffEffect = effect;    
+
+        effect.StartEffect(100f);
+
+        StopAllCoroutines();
+        StartCoroutine(HoshiTanEffectCoroutine(duration));
+    }
+
+    private IEnumerator HoshiTanEffectCoroutine(float duration)
+    {
+        float recoveryValue = 0f;
+        while (duration > 0f)
+        {
+            recoveryValue += Time.deltaTime * _recoverySpeed;
+
+            if (recoveryValue > 1)
+            {
+                recoveryValue = 0f;
+                _health++;
+            }
+
+            duration -= Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+    }
+
 }

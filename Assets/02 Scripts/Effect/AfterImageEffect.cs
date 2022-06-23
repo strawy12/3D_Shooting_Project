@@ -71,7 +71,6 @@ public class AfterImageEffect : PoolableMono
         });
     }
 
-
     public override void Reset()
     {
         if (_material == null) return;

@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &326239774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 326239775}
+  m_Layer: 3
+  m_Name: HitPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &326239775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326239774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5481082888364723148}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &850569247
 GameObject:
   m_ObjectHideFlags: 0
@@ -10116,7 +10146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _radius: 2.16
-  _angle: 90
+  _angle: 360
   _attackDamage: 2
   _delayTime: 0.3
   OnSuccessAttack:
@@ -10963,6 +10993,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 779f391d252615a4fa74c6a0d69cf243, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxHealth: 100
+  _recoverySpeed: 0
+  <OnDie>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <OnGetHit>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 143391945}
+        m_TargetAssemblyTypeName: AgentAnimation, Assembly-CSharp
+        m_MethodName: PlayHitAnim
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _hitEffectPos: {fileID: 326239775}
 --- !u!114 &5481082887633569529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11065,9 +11116,9 @@ MonoBehaviour:
   OnThrowButtonPress:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GaugeHUD, Assembly-CSharp
-        m_MethodName: ActiveGauge
+      - m_Target: {fileID: 5481082888364758573}
+        m_TargetAssemblyTypeName: PlayerThrow, Assembly-CSharp
+        m_MethodName: Throw
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11079,34 +11130,10 @@ MonoBehaviour:
         m_CallState: 2
   OnThrowButtonRelease:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GaugeHUD, Assembly-CSharp
-        m_MethodName: unActiveGauge
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   OnThrowCancel:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GaugeHUD, Assembly-CSharp
-        m_MethodName: unActiveGauge
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &5481082887633569531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11123,7 +11150,7 @@ MonoBehaviour:
   OnChangeVelocity:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 143391945}
         m_TargetAssemblyTypeName: AgentAnimation, Assembly-CSharp
         m_MethodName: AnimateAgent
         m_Mode: 0
@@ -11152,7 +11179,7 @@ MonoBehaviour:
   OnAttack:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 143391945}
         m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
         m_MethodName: SetAttackCnt
         m_Mode: 0
@@ -11204,10 +11231,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _throwPos: {fileID: 5481082887080982792}
-  _maxThrowForce: 500
-  _hoshiTanPref: {fileID: -7173818287146884595, guid: 8175f1745f247a84a933d9f4be382cd2, type: 3}
+  _throwForce: 500
   _cooltimeDelay: 0
-  _throwDelay: 0.8
+  _throwDelay: 0.75
+  _chargingSpeed: 2
+  ThrowFeedback:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 143391945}
+        m_TargetAssemblyTypeName: PlayerAnimation, Assembly-CSharp
+        m_MethodName: PlayThrowAnim
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5481082887633569531}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ChangeThrowState
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  EndThrow:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5481082887633569531}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ChangeThrowState
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1898283336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11225,19 +11294,31 @@ MonoBehaviour:
   _dashSpeed: 100
   _destinationBlockedOffset: 0.1
   _dashDistance: 5
-  _dashDistanceOffset: 1
+  _dashDistanceOffset: 2
   _effectDurationOffset: 0.5
   _dashEffect: {fileID: 6239192808890630944}
   _dashCnt: 3
   _cantThroughLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 448
   OnDashFeedBack:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2072441351}
-        m_TargetAssemblyTypeName: FieldOfVeiwFeedBack, Assembly-CSharp
-        m_MethodName: CreateFeedBack
+      - m_Target: {fileID: 5481082887633569531}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ChangeDashState
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 143391944}
+        m_TargetAssemblyTypeName: PlayerAfterImage, Assembly-CSharp
+        m_MethodName: StartEffect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11245,7 +11326,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
   OnBlockedDash:
     m_PersistentCalls:
@@ -11264,7 +11345,31 @@ MonoBehaviour:
         m_CallState: 2
   OnDashEnd:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5481082887633569531}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ChangeDashState
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 143391944}
+        m_TargetAssemblyTypeName: PlayerAfterImage, Assembly-CSharp
+        m_MethodName: StopEffect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5481082888364758568
 GameObject:
   m_ObjectHideFlags: 0
@@ -11364,6 +11469,7 @@ Transform:
   - {fileID: 5481082888364723174}
   - {fileID: 5481082888364723150}
   - {fileID: 5481082888364722694}
+  - {fileID: 326239775}
   m_Father: {fileID: 5481082888364722830}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11759,7 +11865,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5481082888364758586}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -3.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5481082888364722850}
@@ -18695,6 +18801,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5968420266313412127}
   - component: {fileID: 7291078505957585689}
+  - component: {fileID: 143391944}
+  - component: {fileID: 143391945}
   m_Layer: 3
   m_Name: HoshiMesh
   m_TagString: Untagged
@@ -18739,3 +18847,44 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &143391944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8827522386904487079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb789d7eee551145a5a0a712caa14d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lifeTime: 1
+  _generateInterval: 0.01
+--- !u!114 &143391945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8827522386904487079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea3b653b4719fd747af93043638cf49d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnPlayActAnimation:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5481082887633569531}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: ImmediatelyForwardBody
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

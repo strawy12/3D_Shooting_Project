@@ -7,17 +7,6 @@ public class HoshiTanItem : ItemObject, IItem
     [field:SerializeField]
     public EItemType ItemType { get; set; }
 
-    [SerializeField] private float _rotateSpped;
-
-    protected override void Update()
-    {
-        base.Update();
-        Vector3 angle = transform.eulerAngles;
-        angle.y += Time.deltaTime * _rotateSpped;
-
-        transform.rotation = Quaternion.Euler(angle); 
-    }
-
     public void TakeAction()
     {
         GameManager.Inst.AddItemCount(ItemType);
@@ -27,6 +16,6 @@ public class HoshiTanItem : ItemObject, IItem
 
     public override void Reset()
     {
-        
+        ItemType = EItemType.HoshiTan;
     }
 }

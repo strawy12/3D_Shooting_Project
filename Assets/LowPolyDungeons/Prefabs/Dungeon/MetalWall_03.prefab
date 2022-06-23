@@ -12,12 +12,12 @@ GameObject:
   - component: {fileID: 6464030425959553271}
   - component: {fileID: 3728767305271279814}
   - component: {fileID: 8208305177036542185}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: MetalWall_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &7696292813936438783
 Transform:

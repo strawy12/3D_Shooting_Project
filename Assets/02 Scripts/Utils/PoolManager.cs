@@ -36,6 +36,7 @@ public class PoolManager
 
     public void Push(PoolableMono obj)
     {
+        obj.transform.SetParent(_parant);
         _pools[obj.name.Trim()].Push(obj);
     }
 }
