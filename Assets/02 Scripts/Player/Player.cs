@@ -49,6 +49,15 @@ public class Player : MonoBehaviour, IHittable
     {
         Health = _maxHealth;
     }
+    private void OnTriggerEnter(Collider other) // 아이템용
+    {
+        if(other.gameObject.CompareTag("Item"))
+        {
+            IItem item = other.transform.GetComponent<IItem>();
+
+            item.TakeAction();
+        }
+    }
 
     public void GetHit(int damage, GameObject damageDealer)
     {

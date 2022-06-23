@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,11 +10,22 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField] private PoolingListSO _poolingData;
     [SerializeField] private List<SpawnPair> _spawnPairList;
 
+
+
     private SpawnPair _currentSpawnPair;
+    private PlayerData _playerData;
 
     private UIManager _uiManager;
 
     public bool Test;
+
+    public PlayerData Data
+    {
+        get
+        {
+            return _playerData;
+        }
+    }
 
     public UIManager UI
     {
@@ -112,6 +124,25 @@ public class GameManager : MonoSingleton<GameManager>
 
             SpawnMonster();
         }
+    }
+
+    public void AddCount(EItemType itemType)
+    {
+        SetItemPanel(itemType);
+        _playerData.AddCount(itemType);
+    }
+
+    public void SubsCount(EItemType itemType)
+    {
+        SetItemPanel(itemType);
+        _playerData.AddCount(itemType);
+    }
+
+    private void SetItemPanel(EItemType type)
+    {
+        ItemPanel panel = _uiManager.FindItemPanel(type);
+
+        panel.SetCountText();
     }
 
     private void NextElement()

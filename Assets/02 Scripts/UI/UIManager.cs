@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
@@ -11,6 +12,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float _spreadRange = 300f;
     [SerializeField] private float _maxDropPosY = 100f;
     [SerializeField] private float _jumpPower;
+
+    [SerializeField] private List<ItemPanel> _itemPanelList = new List<ItemPanel>();
+
 
     private Stack<TMP_Text> _damagePopupPool = new Stack<TMP_Text>();
 
@@ -53,6 +57,11 @@ public class UIManager : MonoBehaviour
         damagePopup.gameObject.SetActive(true);
 
         return damagePopup;
+    }
+
+    public ItemPanel FindItemPanel(EItemType type)
+    {
+        return _itemPanelList.Find(x => x.Type == type);
     }
 
     private void PushDamagePopup(TMP_Text damagePopup)
