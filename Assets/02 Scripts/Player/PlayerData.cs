@@ -22,12 +22,12 @@ public class PlayerData
         return cnt;
     }
 
-    public void InitItemDict(EItemType type)
+    public void InitItemDict()
     {
-        if (itemCountDict.ContainsKey(type))
-            return;
-
-        itemCountDict.Add(type, 0);
+        itemCountDict = new Dictionary<EItemType, int>();
+        itemCountDict.Add(EItemType.HoshiTan, 0);
+        itemCountDict.Add(EItemType.Sheild, 0);
+        itemCountDict.Add(EItemType.Trap, 0);
     }
 
     public void AddCount(EItemType type)

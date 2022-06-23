@@ -8,12 +8,12 @@ public class PlayerThrow : MonoBehaviour
     [SerializeField] private Transform _throwPos;
 
     [SerializeField] private float _throwForce;
-    [SerializeField] private HoshiTan _hoshiTanPref;
     [SerializeField] private float _cooltimeDelay;
     [SerializeField] private float _throwDelay;
     [SerializeField] private float _chargingSpeed = 2f;
 
     public UnityEvent ThrowFeedback;
+    public UnityEvent EndThrow;
     private bool _canThrow = true;
 
     private HoshiTan _currentObject;
@@ -21,13 +21,18 @@ public class PlayerThrow : MonoBehaviour
 
     public void Throw()
     {
-        if (!_canThrow) return;
+        if (!CanThrow()) return;
         _canThrow = false;
-        _currentObject = Instantiate(_hoshiTanPref);
+        _currentObject = PoolManager.Inst.Pop("HoshiTan") as HoshiTan;
         _currentObject.InitObject(_throwPos);
 
         ThrowFeedback?.Invoke();
         StartCoroutine(ThrowCoroutine());
+    }
+
+    public bool CanThrow()
+    {
+        return _canThrow && GameManager.Inst.Data.GetItemCount(EItemType.HoshiTan) != 0;
     }
 
     private IEnumerator ThrowCoroutine()
@@ -39,8 +44,10 @@ public class PlayerThrow : MonoBehaviour
 
         _currentObject.ThrowHoshiTan(direction.normalized, _throwForce);
 
-        StartCoroutine(CooltimeDelay());
+        EndThrow?.Invoke();
+        GameManager.Inst.SubItemCount(EItemType.HoshiTan);
 
+        StartCoroutine(CooltimeDelay());
     }
 
     private IEnumerator CooltimeDelay()

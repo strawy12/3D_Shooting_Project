@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ItemObject : MonoBehaviour
+public abstract class ItemObject : PoolableMono
 {
     [SerializeField] protected float _moveYPos;
     [SerializeField] protected float _speed;
 
     private Vector3 _originPos;
 
+    public UnityEvent OnTriggerEnter;
+     
     private void Start()
     {
         _originPos = transform.position;    
     }
 
-    void Update()
+    protected virtual void Update()
     {
         float t = Mathf.Sin(Time.time * _speed) * 0.5f + 0.5f;
 
@@ -25,4 +28,6 @@ public class ItemObject : MonoBehaviour
 
         transform.position = pos;
     }
+
+
 }

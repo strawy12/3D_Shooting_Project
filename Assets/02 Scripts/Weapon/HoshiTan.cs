@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HoshiTan : PoolableMono
 {
-    [SerializeField] private GameObject _hoshiTanEffect;
     [SerializeField] private Transform _parentTrs;
     private Rigidbody _rigid;
 
     private bool _isThrow;
+    [SerializeField] private float _duration;
 
     public void LateUpdate()
     {
@@ -36,7 +36,6 @@ public class HoshiTan : PoolableMono
         _rigid.AddForce(dir* force);
         _rigid.AddTorque(dir* force);
 
-        Debug.Log(force);
     }
 
 
@@ -46,8 +45,9 @@ public class HoshiTan : PoolableMono
         if(other.gameObject.layer == 6)
         {
             Vector3 pos = transform.position;
-            Instantiate(_hoshiTanEffect, pos, Quaternion.identity);
-            Destroy(gameObject);
+          HoshiTanEffect effect =  PoolManager.Inst.Pop("HoshiTanEffect") as HoshiTanEffect;
+            effect.StartEffect(_duration);
+            PoolManager.Inst.Push(this);
         }
     }
 

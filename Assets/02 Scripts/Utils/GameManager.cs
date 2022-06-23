@@ -23,6 +23,11 @@ public class GameManager : MonoSingleton<GameManager>
     {
         get
         {
+            if(_playerData == null)
+            {
+                _playerData = new PlayerData();
+                _playerData.InitItemDict();
+            }
             return _playerData;
         }
     }
@@ -55,6 +60,12 @@ public class GameManager : MonoSingleton<GameManager>
         if (_uiManager == null)
         {
             _uiManager = GetComponent<UIManager>();
+        }
+
+        if (_playerData == null)
+        {
+            _playerData = new PlayerData();
+            _playerData.InitItemDict();
         }
     }
 
@@ -126,16 +137,16 @@ public class GameManager : MonoSingleton<GameManager>
         }
     }
 
-    public void AddCount(EItemType itemType)
+    public void AddItemCount(EItemType itemType)
     {
-        SetItemPanel(itemType);
         _playerData.AddCount(itemType);
+        SetItemPanel(itemType);
     }
 
-    public void SubsCount(EItemType itemType)
+    public void SubItemCount(EItemType itemType)
     {
-        SetItemPanel(itemType);
         _playerData.AddCount(itemType);
+        SetItemPanel(itemType);
     }
 
     private void SetItemPanel(EItemType type)

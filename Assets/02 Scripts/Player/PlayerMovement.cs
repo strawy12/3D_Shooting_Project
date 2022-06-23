@@ -8,7 +8,7 @@ public class PlayerMovement : AgentMovement
     protected Collider _collider;
 
     private bool _isDash;
-    private Vector3 _forward;
+    private bool _isThrow;
 
     private bool _isJump;
 
@@ -21,6 +21,7 @@ public class PlayerMovement : AgentMovement
     protected override void ChildUpdate()
     {
         if (_isDash) return;
+        if (_isThrow) return;
 
         Vector3 velocity = _currentDir;
         velocity.x *= _currentVelocity;
@@ -35,6 +36,11 @@ public class PlayerMovement : AgentMovement
             _isJump = false;
         }
   
+    }
+
+    public void ChangeThrowState(bool isThrow)
+    {
+        _isThrow = isThrow;
     }
 
     public void ChangeDashState(bool isDash)

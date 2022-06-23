@@ -13,6 +13,11 @@ public class ItemPanel : MonoBehaviour
         get => _itemType;
     }
 
+    private void Start()
+    {
+        SetCountText();   
+    }
+
     public void SetCountText()
     {
         int cnt = GameManager.Inst.Data.GetItemCount(_itemType);
