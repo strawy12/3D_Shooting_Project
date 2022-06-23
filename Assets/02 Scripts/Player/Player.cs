@@ -54,7 +54,6 @@ public class Player : MonoBehaviour, IHittable
     {
         if (_isDead) return;
 
-        Debug.Log("dd");
         Health -= damage;
         OnGetHit?.Invoke();
         GenerateHitEffect();

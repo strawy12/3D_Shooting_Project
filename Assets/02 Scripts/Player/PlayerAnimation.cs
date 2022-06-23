@@ -18,10 +18,14 @@ public class PlayerAnimation : AgentAnimation
 
     public void SetRun(bool isRun)
     {
+        if (_isDead) return;
+
         _animator.SetBool(_hashRun, isRun);
     }
     public void PlayThrowAnim()
     {
+        if (_isDead) return;
+
         OnPlayActAnimation?.Invoke();
         _animator.SetTrigger(_hashThrow);
     }

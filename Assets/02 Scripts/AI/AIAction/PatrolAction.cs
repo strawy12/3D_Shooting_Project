@@ -8,7 +8,8 @@ public class PatrolAction : AIAction
     private Vector3 _movementDir;
     private float _distance;
     [SerializeField] private float _minDistance = 2f; 
-    [SerializeField] private float _maxDistance = 5f; 
+    [SerializeField] private float _maxDistance = 5f;
+    [SerializeField] private LayerMask _cantThroughLayer;
     public override void Enter()
     {
         while(true)
@@ -17,7 +18,7 @@ public class PatrolAction : AIAction
             _distance = Random.Range(_minDistance, _maxDistance);
             _movementDir.Normalize();
 
-            if (!Physics.Raycast(transform.position, _movementDir, _distance, ~(1 << 6)))
+            if (!Physics.Raycast(transform.position, _movementDir, _distance, _cantThroughLayer))
             {
                 break;
             }

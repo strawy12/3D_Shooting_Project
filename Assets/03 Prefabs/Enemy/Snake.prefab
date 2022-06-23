@@ -769,6 +769,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _minDistance: 3
   _maxDistance: 5
+  _cantThroughLayer:
+    serializedVersion: 2
+    m_Bits: 320
 --- !u!1 &4696557014631229070
 GameObject:
   m_ObjectHideFlags: 0
@@ -1279,15 +1282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0969fcfe4a046042945b07691a9354e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnEnterCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  OnStayCollider:
-    m_PersistentCalls:
-      m_Calls: []
-  OnExitCollider:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &4696557015975523361
 GameObject:
   m_ObjectHideFlags: 0

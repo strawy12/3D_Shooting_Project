@@ -8,6 +8,10 @@ public class EnemyAnimation : AgentAnimation
 
     public void PlaySpawnAnim()
     {
+        if (_isDead)
+        {
+            _isDead = false;
+        }
         _animator.SetTrigger(_hashSpawn);
     }
 }

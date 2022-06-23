@@ -13,6 +13,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     private UIManager _uiManager;
 
+    public bool Test;
+
     public UIManager UI
     {
         get
@@ -92,7 +94,10 @@ public class GameManager : MonoSingleton<GameManager>
                 enemy.SetPositionAndRotation(_currentSpawnPair.spawnPos.position, _currentSpawnPair.spawnPos.rotation);
                 enemy.SpawnEnemy();
 
-
+                if(Test)
+                {
+                    yield break;
+                }
                 yield return new WaitForSeconds(info.nextSpawnDelay);
             }
             yield return new WaitForSeconds(_currentSpawnPair.monsterSpawnInfoDataSO.nextElementSpawnDelay);

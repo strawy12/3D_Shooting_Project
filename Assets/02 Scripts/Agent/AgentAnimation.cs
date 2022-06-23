@@ -13,6 +13,8 @@ public class AgentAnimation : MonoBehaviour
 
     public UnityEngine.Events.UnityEvent OnPlayActAnimation;
 
+    protected bool _isDead;
+
     private void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -21,10 +23,13 @@ public class AgentAnimation : MonoBehaviour
 
     protected virtual void ChildAwake()
     {
+
     }
 
     public void PlayAttackAnim()
     {
+        if (_isDead) return;
+
         OnPlayActAnimation?.Invoke();
 
         _animator.SetTrigger(_hashAttack);
@@ -32,6 +37,8 @@ public class AgentAnimation : MonoBehaviour
 
     public void SetWalkAnim(bool isWalk)
     {
+        if (_isDead) return;
+
         _animator.SetBool(_hashWalk, isWalk);
     }
 
@@ -42,11 +49,17 @@ public class AgentAnimation : MonoBehaviour
 
     public void PlayDeadAnim()
     {
+        if (_isDead) return;
+
+        _isDead = true;
+
+
         _animator.SetTrigger(_hashDead);
     }
 
     public void PlayHitAnim()
     {
+        if (_isDead) return;
         _animator.SetTrigger(_hashHit);
     }
 }
