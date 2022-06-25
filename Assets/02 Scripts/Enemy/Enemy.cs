@@ -13,6 +13,7 @@ public class Enemy : PoolableMono, IHittable
 
     [SerializeField] private float _hitEffectLifeTime;
     [SerializeField] private Transform _hitEffectPos;
+    [SerializeField] private GameObject _hitCollider;
     [SerializeField] private Material _hitMat;
 
     private SkinnedMeshRenderer _skinnedMeshRederer;
@@ -90,9 +91,6 @@ public class Enemy : PoolableMono, IHittable
 
         if (_monsterData.health <= 0f)
         {
-            _isDead = true;
-            _enemyMovement.StopImmediatelly();
-            CanAttack = false;
             EnemyDead();
             OnDie?.Invoke();
         }
@@ -114,6 +112,7 @@ public class Enemy : PoolableMono, IHittable
     {
         OnSpawn?.Invoke();
         _navMeshAgent.enabled = true;
+        _hitCollider.SetActive(true);
         _enemyMovement.StartMove();
     }
 
@@ -151,9 +150,23 @@ public class Enemy : PoolableMono, IHittable
 
     public void EnemyDead()
     {
+        StopAllCoroutines();
+        _hitCollider.SetActive(false);
+        _isDead = true;
+        CanAttack = false;
+        _enemyMovement.StopImmediatelly();
+
+        GameManager.Inst.UI.GenerateKillText("Snake");
         if (_monsterData.isLastMonster)
         {
             EventManager.TriggerEvent(Constant.ALL_KILL_MONSTER);
+        }
+
+
+        if (_additionalDamageFactor != 1f)
+        {
+            _additionalDamageFactor = 1f;
+            _currentBuffEffect.ImmediatelyStop();
         }
 
         StartCoroutine(DeadDelay());

@@ -8,6 +8,7 @@ using DG.Tweening;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text _damagePopupTemp;
+    [SerializeField] private TMP_Text _killTextTemp;
 
     [SerializeField] private float _spreadRange = 300f;
     [SerializeField] private float _maxDropPosY = 100f;
@@ -20,11 +21,12 @@ public class UIManager : MonoBehaviour
 
 
     private Stack<TMP_Text> _damagePopupPool = new Stack<TMP_Text>();
+    private Stack<TMP_Text> _killTextPool = new Stack<TMP_Text>();
     private InteractionObject _currentInteractionObject;
 
     private void Update()
     {
-        if(_currentInteractionObject != null)
+        if (_currentInteractionObject != null)
         {
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -51,10 +53,20 @@ public class UIManager : MonoBehaviour
         float xPos = pos.x + randDir * Random.Range(1f, _spreadRange);
         float yPos = pos.y - Random.Range(1f, _maxDropPosY);
 
-        seq.Join(damagePopup.transform.DOJump(new Vector2(xPos, yPos), _jumpPower, 1,0.5f));
+        seq.Join(damagePopup.transform.DOJump(new Vector2(xPos, yPos), _jumpPower, 1, 0.5f));
         seq.Append(damagePopup.transform.DOScale(Vector3.zero, 0.25f));
         seq.Join(damagePopup.DOFade(0f, 0.4f));
         seq.AppendCallback(() => PushDamagePopup(damagePopup));
+    }
+
+    public void GenerateKillText(string name)
+    {
+        TMP_Text killText = PopKillText();
+        killText.text = $"+ {name} Kill!";
+        Sequence seq = DOTween.Sequence();
+        seq.Append(killText.DOFade(0f, 2f));
+        seq.Join(killText.rectTransform.DOAnchorPosY(-100f, 1f));
+        seq.AppendCallback(() => PushKillText(killText));
     }
 
     private TMP_Text PopDamagePopup()
@@ -75,6 +87,27 @@ public class UIManager : MonoBehaviour
         return damagePopup;
     }
 
+    private TMP_Text PopKillText()
+    {
+        TMP_Text killText = null;
+        if (_killTextPool.Count == 0)
+        {
+            killText = Instantiate(_killTextTemp, _killTextTemp.transform.parent);
+        }
+
+        else
+        {
+            killText = _killTextPool.Pop();
+        }
+
+        killText.color = Color.red;
+        killText.rectTransform.anchoredPosition = new Vector2(0f, -180f);
+
+        killText.gameObject.SetActive(true);
+
+        return killText;
+    }
+
     public ItemPanel FindItemPanel(EItemType type)
     {
         return _itemPanelList.Find(x => x.Type == type);
@@ -85,6 +118,13 @@ public class UIManager : MonoBehaviour
         damagePopup.gameObject.SetActive(false);
 
         _damagePopupPool.Push(damagePopup);
+    }
+
+    private void PushKillText(TMP_Text killText)
+    {
+        killText.gameObject.SetActive(false);
+
+        _killTextPool.Push(killText);
     }
 
     public void SetHpBar(int hp, int maxhp, int shieldhp)

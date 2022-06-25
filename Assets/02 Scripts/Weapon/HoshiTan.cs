@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class HoshiTan : PoolableMono
 {
-    [SerializeField] private Transform _parentTrs;
+    private Transform _parentTrs;
     private Rigidbody _rigid;
 
     private bool _isThrow;
     [SerializeField] private float _duration;
+
 
     public void LateUpdate()
     {

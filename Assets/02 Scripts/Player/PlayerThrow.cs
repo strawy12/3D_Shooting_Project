@@ -10,9 +10,9 @@ public class PlayerThrow : MonoBehaviour
     [SerializeField] private float _throwForce;
     [SerializeField] private float _cooltimeDelay;
     [SerializeField] private float _throwDelay;
-    [SerializeField] private float _chargingSpeed = 2f;
 
     public UnityEvent ThrowFeedback;
+    public UnityEvent OnThrow;
     public UnityEvent EndThrow;
     private bool _canThrow = true;
 
@@ -38,6 +38,7 @@ public class PlayerThrow : MonoBehaviour
     private IEnumerator ThrowCoroutine()
     {
         yield return new WaitForSeconds(_throwDelay);
+        OnThrow?.Invoke();
 
         Vector3 direction = Camera.main.transform.TransformDirection(Vector3.forward);
         direction.y = 0f;

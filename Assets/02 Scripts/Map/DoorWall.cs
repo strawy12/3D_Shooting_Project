@@ -18,8 +18,14 @@ public class DoorWall : InteractionObject
     [SerializeField] private float _duration;
     [SerializeField] private bool _needKey;
 
+    private DoorSound _doorSound;
     private bool _isOpen;
     private bool _takingAction;
+
+    private void Awake()
+    {
+        _doorSound = GetComponent<DoorSound>();
+    }
 
     public void OpenDoor()
     {
@@ -30,6 +36,7 @@ public class DoorWall : InteractionObject
             rot.y += door.openAngle;
             door.transform.DORotate(rot, _duration).OnComplete(EndAction);
         }
+        _doorSound.PlayOpenSound();
     }
 
     public void CloseDoor()
@@ -39,6 +46,7 @@ public class DoorWall : InteractionObject
         {
             door.transform.DORotate(rot, _duration).OnComplete(EndAction);
         }
+        _doorSound.PlayCloseSound();
     }
 
     private void EndAction()
