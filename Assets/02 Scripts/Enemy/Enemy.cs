@@ -35,6 +35,8 @@ public class Enemy : PoolableMono, IHittable
     private float _additionalDamageFactor = 1f;
     private Coroutine _hoshiTanEffectCoroutine = null;
 
+    BuffEffect _currentBuffEffect;
+
     private bool _init;
     private void Awake()
     {
@@ -82,7 +84,7 @@ public class Enemy : PoolableMono, IHittable
         _monsterData.health -=  (int)(damage * _additionalDamageFactor);
 
         ShowHitOutline();
-        GenerateHitEffect(damage);
+        GenerateHitEffect((int)(damage * _additionalDamageFactor));
         //DamagePopup popup = PoolManager.Instance.Pop("DamagePopup") as DamagePopup;
         //popup.Setup(damage, transform.position + new Vector3(0, 0.5f, 0), isCritical);
 
@@ -181,16 +183,25 @@ public class Enemy : PoolableMono, IHittable
     {
         _additionalDamageFactor = 1.5f;
 
+        BuffEffect effect = PoolManager.Inst.Pop("DebuffEffect") as BuffEffect;
+        _currentBuffEffect?.ImmediatelyStop();
+        effect.transform.SetParent(_hitEffectPos);
+        effect.transform.localPosition = Vector3.zero;
+        effect.gameObject.SetActive(true);
+        _currentBuffEffect = effect;
+
+        effect.StartEffect(duration);
+
         if (_hoshiTanEffectCoroutine != null)
         {
             StopCoroutine(_hoshiTanEffectCoroutine);
             _hoshiTanEffectCoroutine = null;
         }
 
-        _hoshiTanEffectCoroutine = StartCoroutine(HoshiTanEffectDelay(duration));
+        _hoshiTanEffectCoroutine = StartCoroutine(HoshiTanEffectCoroutine(duration));
     }
 
-    private IEnumerator HoshiTanEffectDelay(float duration)
+    private IEnumerator HoshiTanEffectCoroutine(float duration)
     {
         yield return new WaitForSeconds(duration);
 
@@ -200,7 +211,7 @@ public class Enemy : PoolableMono, IHittable
     public void GetHitTrapEffect(float duration)
     {
         _enemyMovement.StopImmediatelly();
-        _hoshiTanEffectCoroutine = StartCoroutine(TrapEffectDelay(duration));
+        StartCoroutine(TrapEffectDelay(duration));
     }
     private IEnumerator TrapEffectDelay(float duration)
     {

@@ -15,6 +15,7 @@ public class PlayerHitDetact : MonoBehaviour
     LayerMask _targetMask;
 
     public UnityEvent OnSuccessAttack;
+    public UnityEvent OnFailedAttack;
 
     private void Awake()
     {
@@ -68,9 +69,15 @@ public class PlayerHitDetact : MonoBehaviour
                     hitTarget.HitCount = _attackCnt;
                     hitTarget?.GetHit(_attackDamage * _attackCnt, gameObject);
                     OnSuccessAttack?.Invoke();
+
+                    return;
                 }
             }
+
+            return;
         }
+
+        OnFailedAttack?.Invoke();
     }
 
 

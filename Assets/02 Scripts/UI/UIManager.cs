@@ -12,11 +12,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float _spreadRange = 300f;
     [SerializeField] private float _maxDropPosY = 100f;
     [SerializeField] private float _jumpPower;
+    [SerializeField] private HpBar _playerHpBar;
 
     [SerializeField] private List<ItemPanel> _itemPanelList = new List<ItemPanel>();
+    [SerializeField] private DashPanel _dashPanel = null;
+    [SerializeField] private InteractionUI _interationUI = null;
 
 
     private Stack<TMP_Text> _damagePopupPool = new Stack<TMP_Text>();
+    private InteractionObject _currentInteractionObject;
+
+    private void Update()
+    {
+        if(_currentInteractionObject != null)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                _currentInteractionObject.TakeAction();
+                _currentInteractionObject = null;
+            }
+        }
+    }
 
     public void GenerateDamagePopup(Vector3 pos, int damage, bool isCritical)
     {
@@ -69,5 +85,39 @@ public class UIManager : MonoBehaviour
         damagePopup.gameObject.SetActive(false);
 
         _damagePopupPool.Push(damagePopup);
+    }
+
+    public void SetHpBar(int hp, int maxhp, int shieldhp)
+    {
+        _playerHpBar.SetHpBar(hp, maxhp, shieldhp);
+    }
+
+    public void StartDashCoolTime(float delay)
+    {
+        StartCoroutine(_dashPanel.StartDelayCoroutine(delay));
+    }
+
+    public void SetDashCount(int cnt)
+    {
+        _dashPanel.SetCountText(cnt);
+    }
+
+    public void ShowInteractionUI(string text, InteractionObject obj)
+    {
+        if (_currentInteractionObject == obj) return;
+
+
+        _currentInteractionObject = obj;
+        _interationUI.ShowUI(text);
+    }
+
+    public void UnShowInteractionUI(InteractionObject obj)
+    {
+        if (_currentInteractionObject == null) return;
+        if (_currentInteractionObject != obj) return;
+
+        _currentInteractionObject = null;
+        _interationUI.UnShowUI();
+
     }
 }

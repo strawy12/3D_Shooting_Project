@@ -46,6 +46,7 @@ public class PlayerDash : MonoBehaviour
             _useCoroutine = true;
             StartCoroutine(DashCountCharging());
         }
+        GameManager.Inst.UI.SetDashCount(_dashCnt);
     }
 
     public void MovementInput(Vector3 movement)
@@ -84,8 +85,8 @@ public class PlayerDash : MonoBehaviour
 
     private void SetDashCount()
     {
-
         _dashCnt--;
+        GameManager.Inst.UI.SetDashCount(_dashCnt);
 
         if (!_useCoroutine)
         {
@@ -158,9 +159,11 @@ public class PlayerDash : MonoBehaviour
     {
         while (_dashCnt < _maxDashCnt)
         {
+            GameManager.Inst.UI.StartDashCoolTime(_dashCooltime);
             yield return new WaitForSeconds(_dashCooltime);
 
             _dashCnt++;
+            GameManager.Inst.UI.SetDashCount(_dashCnt);
         }
 
         _useCoroutine = false;

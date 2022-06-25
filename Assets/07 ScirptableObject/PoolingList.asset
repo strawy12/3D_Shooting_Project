@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495a13671f1aa4147abe42aeef8780e1, type: 3}
+  m_Name: PoolingList
+  m_EditorClassIdentifier: 
+  list:
+  - prefab: {fileID: 1951323114345120109, guid: 42c6e8a4d0feef44ea0d0c68d57b38ce, type: 3}
+    poolCnt: 20
+  - prefab: {fileID: 4642786598708091354, guid: 1f02156434d482d4e86f84380b50eafb, type: 3}
+    poolCnt: 20
+  - prefab: {fileID: 7354084463372833037, guid: 346ca4a5ff383a44cad03b35c42a157b, type: 3}
+    poolCnt: 20
+  - prefab: {fileID: 9031947743643816266, guid: ccf0a18fcf3883d448df646f45857d2e, type: 3}
+    poolCnt: 20
+  - prefab: {fileID: 981914232270908753, guid: d80c6c88a2578bc4f95b7328de86f9fc, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 733973489828371329, guid: b183a5e2dc31a8b4f81b0137a06dc466, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 5893504013205076687, guid: b24bf24982ec9de45885f5d81f9c8150, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 4696557013964851509, guid: 406222bb62e918a4a8bd572e844ccd1c, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 6589979759070690204, guid: 03034f1ae501a944d84eab8ed3489551, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 3329799676893341670, guid: e5df5caad603c8349ba3481b8ded0927, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: -7173818287146884595, guid: 8175f1745f247a84a933d9f4be382cd2, type: 3}
+    poolCnt: 1
+  - prefab: {fileID: 4640299661902238653, guid: b56dd757a49fd6f4aae5250ae8ef93a4, type: 3}
+    poolCnt: 1
+  - prefab: {fileID: 4640299661902238653, guid: a19d9c55ecb08d14daa85a3936544fc8, type: 3}
+    poolCnt: 1
+  - prefab: {fileID: 718138276307884813, guid: d378e536a9b963046bbb07a64b021e60, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 5778071415430960668, guid: 56024cdc7c38b5e4cae0799308302aa4, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: 2437981836719179248, guid: 651186fed7d2bc74a8f29b1c8f73d5ba, type: 3}
+    poolCnt: 10
+  - prefab: {fileID: -2079604509183111705, guid: 4c04952e4ca30154a9c73adc0330c32f, type: 3}
+    poolCnt: 10

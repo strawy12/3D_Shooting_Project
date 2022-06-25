@@ -7,8 +7,9 @@ public class PlayerCrouch : MonoBehaviour
 {
     [SerializeField] private float _cooltimeDelay;
     [SerializeField] private float _crouchDelay;
+    [SerializeField] private float _rootMotionDelay = 0.75f;
 
-    public UnityEvent CrouchFeedback;
+    public UnityEvent<float> CrouchFeedback;
     public UnityEvent EndCrouch;
 
     private bool _canCrouch = true;
@@ -21,7 +22,7 @@ public class PlayerCrouch : MonoBehaviour
         _canCrouch = false;
 
 
-        CrouchFeedback?.Invoke();
+        CrouchFeedback?.Invoke(_rootMotionDelay);
         StartCoroutine(CrouchCoroutine());
     }
 
@@ -52,7 +53,10 @@ public class PlayerCrouch : MonoBehaviour
             trap.transform.position = transform.position;
         }
 
-        GameManager.Inst.SubItemCount(EItemType.HoshiTan);
+        GameManager.Inst.SubItemCount(EItemType.Trap);
+
+        GameManager.Inst.UI.FindItemPanel(EItemType.Trap).StartDelay(_cooltimeDelay);
+        EndCrouch?.Invoke();
 
         StartCoroutine(CooltimeDelay());
     }

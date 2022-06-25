@@ -9,15 +9,8 @@ public class Player : MonoBehaviour, IHittable
     private int _maxHealth;
 
     private int _health;
+    private int _shielHealth;
 
-    public int Health
-    {
-        get => _health;
-        set
-        {
-            _health = value;
-        }
-    }
     [SerializeField] private float _recoverySpeed;
 
     private bool _isDead = false;
@@ -26,6 +19,7 @@ public class Player : MonoBehaviour, IHittable
     public UnityEvent OnDie { get; set; }
     [field: SerializeField]
     public UnityEvent OnGetHit { get; set; }
+    public UnityEvent OnGetItem;
 
     public Vector3 HitPoint { get; set; }
 
@@ -42,6 +36,7 @@ public class Player : MonoBehaviour, IHittable
 
     //넉백 처리를 위한 에이전트 무브먼트 가져오기
     private PlayerMovement _playerMovement;
+    private ShieldEffect _currentSheild;
 
     private void Awake()
     {
@@ -50,31 +45,72 @@ public class Player : MonoBehaviour, IHittable
 
     private void Start()
     {
-        Health = _maxHealth;
+        _health = _maxHealth;
+        GameManager.Inst.UI.SetHpBar(_health, _maxHealth, _shielHealth);
     }
     private void OnTriggerEnter(Collider other) // 아이템용
     {
         if (other.gameObject.CompareTag("Item"))
         {
             IItem item = other.transform.GetComponentInParent<IItem>();
+            OnGetItem?.Invoke();
+            if (item.ItemType == EItemType.Sheild)
+            {
+                GenerateShield();
+            }
+            item.TakeAction();
 
-            item.TakeAction();  
         }
+    }
+
+    private void GenerateShield()
+    {
+        if(_currentSheild == null)
+        {
+            _currentSheild = PoolManager.Inst.Pop("ShieldEffect") as ShieldEffect;
+            _currentSheild.transform.SetParent(transform);
+            _currentSheild.transform.localPosition = Vector3.up * 0.75f;
+            _currentSheild.transform.localRotation = Quaternion.identity;
+            _currentSheild.StartEffect();
+        }
+
+        _shielHealth += (int)(_maxHealth / 8);
+
+        GameManager.Inst.UI.SetHpBar(_health, _maxHealth, _shielHealth);
     }
 
     public void GetHit(int damage, GameObject damageDealer)
     {
         if (_isDead) return;
 
-        Health -= damage;
-        OnGetHit?.Invoke();
-        GenerateHitEffect();
-        if (Health <= 0)
+        if(_shielHealth > 0f)
+        {
+            _shielHealth -= damage;
+            damage -= _shielHealth;
+        }
+        
+        if(damage > 0f)
+        {
+            _health -= damage;
+            OnGetHit?.Invoke();
+            GenerateHitEffect();
+        }
+
+        if (_currentSheild != null && _shielHealth <= 0f )
+        {
+            _currentSheild.EndEffect();
+            _currentSheild = null;
+        }
+
+        GameManager.Inst.UI.SetHpBar(_health, _maxHealth, _shielHealth);
+
+        if (_health <= 0)
         {
             OnDie?.Invoke();
             _isDead = true;
         }
     }
+
     public void GenerateHitEffect()
     {
         ImpactEffect hitEffect = PoolManager.Inst.Pop("HitEffect_1") as ImpactEffect;
@@ -94,9 +130,9 @@ public class Player : MonoBehaviour, IHittable
         effect.transform.SetParent(_hitEffectPos);
         effect.transform.localPosition = Vector3.zero;
         effect.gameObject.SetActive(true);
-        _currentBuffEffect = effect;    
+        _currentBuffEffect = effect;
 
-        effect.StartEffect(100f);
+        effect.StartEffect(duration);
 
         StopAllCoroutines();
         StartCoroutine(HoshiTanEffectCoroutine(duration));
@@ -113,6 +149,9 @@ public class Player : MonoBehaviour, IHittable
             {
                 recoveryValue = 0f;
                 _health++;
+
+                _health = Mathf.Clamp(_health, 0, _maxHealth);
+                GameManager.Inst.UI.SetHpBar(_health, _maxHealth, _shielHealth);
             }
 
             duration -= Time.deltaTime;

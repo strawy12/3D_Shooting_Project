@@ -9,7 +9,6 @@ public class PlayerAnimation : AgentAnimation
     private int _hashThrow = Animator.StringToHash("Throw");
     private int _hashCrouch = Animator.StringToHash("Crouch");
 
-    [SerializeField] private float _rootMotionDelay = 1f;
 
 
    public void SetAttackCnt(int cnt)
@@ -18,19 +17,20 @@ public class PlayerAnimation : AgentAnimation
         PlayAttackAnim();
     }   
 
-    public void SetCrouchAnim()
+    public void SetCrouchAnim(float rootMotionDelay)
     {
         _animator.applyRootMotion = true;
         _animator.SetTrigger(_hashCrouch);
 
-        StartCoroutine(RootMotionDelay());
+        StartCoroutine(RootMotionDelay(rootMotionDelay));
     }
 
-    private IEnumerator RootMotionDelay()
+    private IEnumerator RootMotionDelay(float rootMotionDelay)
     {
-        yield return new WaitForSeconds(_rootMotionDelay);
+        yield return new WaitForSeconds(rootMotionDelay);
         _animator.applyRootMotion = false;
         transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 
     public void SetRun(bool isRun)

@@ -145,14 +145,13 @@ public class GameManager : MonoSingleton<GameManager>
 
     public void SubItemCount(EItemType itemType)
     {
-        _playerData.AddCount(itemType);
+        _playerData.SubCount(itemType);
         SetItemPanel(itemType);
     }
 
     private void SetItemPanel(EItemType type)
     {
         ItemPanel panel = _uiManager.FindItemPanel(type);
-
         panel.SetCountText();
     }
 

@@ -47,6 +47,7 @@ public class PlayerThrow : MonoBehaviour
         EndThrow?.Invoke();
         GameManager.Inst.SubItemCount(EItemType.HoshiTan);
 
+        GameManager.Inst.UI.FindItemPanel(EItemType.HoshiTan).StartDelay(_cooltimeDelay);
         StartCoroutine(CooltimeDelay());
     }
 

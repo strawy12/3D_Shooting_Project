@@ -16,11 +16,15 @@ public class PlayerInput : MonoBehaviour
     public UnityEvent OnThrowButtonRelease;
     public UnityEvent OnThrowCancel;
 
-    private bool _fireButtonDown = false;
+    private bool _throwing = false;
+    private bool _crouching = false;
 
 
     void Update()
     {
+        if (_throwing) return;
+        if (_crouching) return;
+
         GetDashInput();
         GetMovementInput();
         GetFireInput();
@@ -83,5 +87,15 @@ public class PlayerInput : MonoBehaviour
         }
 
 
+    }
+
+    public void ChangeThrowState(bool isThrow)
+    {
+        _throwing = isThrow;
+    }
+
+    public void ChangeCrouchState(bool isCrouch)
+    {
+        _crouching = isCrouch;
     }
 }

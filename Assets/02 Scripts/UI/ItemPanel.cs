@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
-public class ItemPanel : MonoBehaviour
+public class ItemPanel : CoolTimePanel
 {
     [SerializeField] private EItemType _itemType;
-    [SerializeField] private Text _countText;
-    
+    [SerializeField] private TMP_Text _countText;
+
+
     public EItemType Type
     {
         get => _itemType;
@@ -15,7 +16,7 @@ public class ItemPanel : MonoBehaviour
 
     private void Start()
     {
-        SetCountText();   
+        SetCountText();
     }
 
     public void SetCountText()
