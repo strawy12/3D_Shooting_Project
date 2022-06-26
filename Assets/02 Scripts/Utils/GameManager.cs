@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+public enum GameState
+{
+    Default,
+    UI,
+    CutScene
+}
 
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField] private PoolingListSO _poolingData;
     [SerializeField] private List<SpawnPair> _spawnPairList;
 
-
+    private GameState _gameState;
+    public GameState GameState { get => _gameState; set => _gameState = value; }
 
     private SpawnPair _currentSpawnPair;
     private PlayerData _playerData;

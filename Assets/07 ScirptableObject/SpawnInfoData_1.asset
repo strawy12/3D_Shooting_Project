@@ -19,5 +19,5 @@ MonoBehaviour:
       health: 5
       isLastMonster: 0
     spawnCnt: 5
-    nextSpawnDelay: 0
+    nextSpawnDelay: 2
   nextElementSpawnDelay: 3
