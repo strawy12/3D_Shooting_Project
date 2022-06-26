@@ -112,6 +112,7 @@ public class Enemy : PoolableMono, IHittable
     public void SpawnEnemy()
     {
         OnSpawn?.Invoke();
+        CanAttack = true;
         _navMeshAgent.enabled = true;
         _hitCollider.SetActive(true);
         _enemyMovement.StartMove();
@@ -143,6 +144,11 @@ public class Enemy : PoolableMono, IHittable
         {
             if (attack.AttackType == EnemyAttack.EAttackType.Default)
             {
+                if(_monsterData == null)
+                {
+                    attack.Attack(1);
+                    return;
+                }
                 attack.Attack(_monsterData.attackDamage);
                 return;
             }
@@ -176,7 +182,7 @@ public class Enemy : PoolableMono, IHittable
     private IEnumerator DeadDelay()
     {
         yield return new WaitForSeconds(3f);
-
+        _navMeshAgent.enabled = false;
         PoolManager.Inst.Push(this);
     }
 

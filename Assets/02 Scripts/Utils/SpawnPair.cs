@@ -14,7 +14,6 @@ public enum ChangeSpawnPairType
 [System.Serializable]
 public class SpawnPair
 {
-    [HideInInspector]
     public bool isSpawning;
     public Transform spawnPos;
     public MonsterSpawnInfoDataSO monsterSpawnInfoDataSO;

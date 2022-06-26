@@ -11,7 +11,7 @@ public abstract class InteractionObject : MonoBehaviour
     [SerializeField] protected float _detactStartRange = 10;
     [SerializeField] protected string _interactionText;
 
-    private void Update()
+    protected virtual void Update()
     {
         if (CanDetact() == false) return;
 
@@ -24,7 +24,6 @@ public abstract class InteractionObject : MonoBehaviour
         playerPos.y = 0f;
         Vector3 currentPos = transform.position;
         currentPos.y = 0f;
-
         return Vector3.Distance(playerPos, currentPos) <= _detactStartRange;
     }
 
@@ -38,9 +37,12 @@ public abstract class InteractionObject : MonoBehaviour
     private void Detact()
     {
         Collider[] col = Physics.OverlapSphere(transform.position, _detactRange, LayerMask.GetMask("Player"));
+        Debug.Log(col.Length);
+        foreach (var c in col) Debug.Log(c.name);
         if(col.Length == 1)
         {
-            Debug.Log("°¨Áö!");
+            Debug.Log(22);
+
             GameManager.Inst.UI.ShowInteractionUI(GetInteractionText(), this);
         }
 

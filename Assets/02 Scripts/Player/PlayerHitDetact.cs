@@ -40,7 +40,7 @@ public class PlayerHitDetact : MonoBehaviour
         Collider[] rangeChecks = Physics.OverlapSphere(transform.position, _radius, _targetMask);
 
         List<Transform> attackFinishTrs = new List<Transform>();
-
+        bool attackSuccess = false;
         foreach (var target in rangeChecks)
         {
             if (attackFinishTrs.Contains(target.transform.root)) continue;
@@ -63,21 +63,23 @@ public class PlayerHitDetact : MonoBehaviour
                 {
                     IHittable hitTarget = hit.transform.root.GetComponent<IHittable>();
 
-                    if (hitTarget.CanAttack == false) return;
+                    if (hitTarget.CanAttack == false) continue;
 
                     hitTarget.HitPoint = hit.point;
                     hitTarget.HitCount = _attackCnt;
                     hitTarget?.GetHit(_attackDamage * _attackCnt, gameObject);
                     OnSuccessAttack?.Invoke();
 
-                    return;
+                    attackSuccess = true;
                 }
             }
 
-            return;
         }
 
-        OnFailedAttack?.Invoke();
+       if(!attackSuccess)
+        {
+            OnFailedAttack?.Invoke();
+        }
     }
 
 

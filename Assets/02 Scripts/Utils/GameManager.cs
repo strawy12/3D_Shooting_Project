@@ -13,7 +13,9 @@ public enum GameState
 public class GameManager : MonoSingleton<GameManager>
 {
     [SerializeField] private PoolingListSO _poolingData;
+    [SerializeField] private int _startIndex = 13;
     [SerializeField] private List<SpawnPair> _spawnPairList;
+    [SerializeField] private Transform _teleportPos;
 
     private GameState _gameState;
     public GameState GameState { get => _gameState; set => _gameState = value; }
@@ -80,7 +82,7 @@ public class GameManager : MonoSingleton<GameManager>
     private void Start()
     {
         EventManager.StartListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
-        EventManager.StartListening(Constant.ARRIVED_TARGET_POS, () => NextSpawnInfo(ChangeSpawnPairType.Arrived));
+        PEventManager.StartListening(Constant.ARRIVED_TARGET_POS, NextSpawnInfo);
         PEventManager.StartListening(Constant.ON_TARGET_ACTION, NextSpawnInfo);
 
         SpawnMonster();
@@ -90,8 +92,8 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (_spawnPairList.Count == 0) return;
 
-        _currentSpawnPair = _spawnPairList[0];
-        _spawnPairList.RemoveAt(0);
+        _currentSpawnPair = _spawnPairList[0 + _startIndex];
+        _spawnPairList.RemoveAt(0 + _startIndex);
 
         StartCoroutine(SpawnMonsterCoroutine());
     }
@@ -99,13 +101,13 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if (_actionNum != param.iParam) return;
 
-        NextSpawnInfo(ChangeSpawnPairType.Action);
+        ChangeSpawnPairType type = param.sParam == "Action" ? ChangeSpawnPairType.Action : ChangeSpawnPairType.Arrived;
+        NextSpawnInfo(type);
     }
     private void NextSpawnInfo(ChangeSpawnPairType type)
     {
         if (_currentSpawnPair.isSpawning) return;
         if (_currentSpawnPair.changeType != type) return;
-
         _currentSpawnPair.endSpawnAction?.Invoke();
         SpawnMonster();
     }
@@ -115,7 +117,12 @@ public class GameManager : MonoSingleton<GameManager>
     {
         Enemy enemy = null;
         _currentSpawnPair.isSpawning = true;
-        int cnt = _currentSpawnPair.monsterSpawnInfoDataSO.Count;
+        int cnt = 0;
+        if (_currentSpawnPair.monsterSpawnInfoDataSO != null)
+        {
+            cnt = _currentSpawnPair.monsterSpawnInfoDataSO.Count;
+        }
+
         MonsterSpawnInfo info = null;
         for (int i = 0; i < cnt; i++)
         {
@@ -132,10 +139,17 @@ public class GameManager : MonoSingleton<GameManager>
                 {
                     yield break;
                 }
-                yield return new WaitForSeconds(info.nextSpawnDelay);
+
+                if(j + 1 < info.spawnCnt)
+                {
+                    yield return new WaitForSeconds(info.nextSpawnDelay);
+                }
             }
 
-            yield return new WaitForSeconds(_currentSpawnPair.monsterSpawnInfoDataSO.nextElementSpawnDelay);
+            if(i+1 < cnt)
+            {
+                yield return new WaitForSeconds(_currentSpawnPair.monsterSpawnInfoDataSO.nextElementSpawnDelay);
+            }
 
         }
 
@@ -144,19 +158,18 @@ public class GameManager : MonoSingleton<GameManager>
         if (_currentSpawnPair.changeType == ChangeSpawnPairType.Delay)
         {
             yield return new WaitForSeconds(_currentSpawnPair.spawnDelay);
-
+            _actionNum = -1;
             NextSpawnInfo(ChangeSpawnPairType.Delay);
         }
 
-        else if(_currentSpawnPair.changeType == ChangeSpawnPairType.Action)
+        else if(_currentSpawnPair.changeType != ChangeSpawnPairType.AllKill)
         {
-            if(_currentSpawnPair.actionNum == -1)
-            {
-                Debug.LogError("action 설정하고 넘버 설정 안함");
-                yield break;
-            }
-
             _actionNum = _currentSpawnPair.actionNum;
+        }
+
+        else
+        {
+            _actionNum = -1;
         }
     }
 
@@ -176,6 +189,11 @@ public class GameManager : MonoSingleton<GameManager>
    {
         ItemPanel panel = _uiManager.FindItemPanel(type);
         panel.SetCountText();
+    }
+
+    public void TeleportPlayer()
+    {
+        Define.PlayerRef.position = _teleportPos.position;
     }
 
     private void OnApplicationQuit()

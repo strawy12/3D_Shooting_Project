@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<ItemPanel> _itemPanelList = new List<ItemPanel>();
     [SerializeField] private DashPanel _dashPanel = null;
     [SerializeField] private InteractionUI _interationUI = null;
+    [SerializeField] private DoorOpenArlamPanel _doorOpenArlamPanel = null;
 
 
     private Stack<TMP_Text> _damagePopupPool = new Stack<TMP_Text>();
@@ -159,5 +160,10 @@ public class UIManager : MonoBehaviour
         _currentInteractionObject = null;
         _interationUI.UnShowUI();
 
+    }
+
+    public void DoorOpen()
+    {
+        _doorOpenArlamPanel.StartEffect();
     }
 }

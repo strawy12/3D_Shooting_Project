@@ -61,6 +61,7 @@ public class DoorWall : InteractionObject
         {
             Param p = new Param();
             p.iParam = 0;
+            p.sParam = "Action";
             PEventManager.TriggerEvent(Constant.ON_TARGET_ACTION, p);
            _doorSound.PlayLockSound();
             return;
@@ -81,6 +82,7 @@ public class DoorWall : InteractionObject
 
     public void UnLockDoor()
     {
+        GameManager.Inst.UI.DoorOpen();
         _isLock = false;
     }
 
