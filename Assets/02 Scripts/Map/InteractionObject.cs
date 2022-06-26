@@ -40,6 +40,7 @@ public abstract class InteractionObject : MonoBehaviour
         Collider[] col = Physics.OverlapSphere(transform.position, _detactRange, LayerMask.GetMask("Player"));
         if(col.Length == 1)
         {
+            Debug.Log("°¨Áö!");
             GameManager.Inst.UI.ShowInteractionUI(GetInteractionText(), this);
         }
 

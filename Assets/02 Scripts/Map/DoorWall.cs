@@ -16,7 +16,7 @@ public class DoorWall : InteractionObject
 {
     [SerializeField] private List<Door> _doorList;
     [SerializeField] private float _duration;
-    [SerializeField] private bool _needKey;
+    [SerializeField] private bool _isLock;
 
     private DoorSound _doorSound;
     private bool _isOpen;
@@ -57,7 +57,14 @@ public class DoorWall : InteractionObject
     public override void TakeAction()
     {
         if (_takingAction) return;
-        if (_needKey) return;
+        if (_isLock)
+        {
+            Param p = new Param();
+            p.iParam = 0;
+            PEventManager.TriggerEvent(Constant.ON_TARGET_ACTION, p);
+           _doorSound.PlayLockSound();
+            return;
+        }
         _takingAction = true;
         _isOpen = !_isOpen;
 
@@ -72,9 +79,16 @@ public class DoorWall : InteractionObject
         }
     }
 
+    public void UnLockDoor()
+    {
+        _isLock = false;
+    }
+
+
+
     public override string GetInteractionText()
     {
-        if (_needKey)
+        if (_isLock)
             return "잠겨있다";
 
         return _isOpen ? "문 닫기" : "문 열기";

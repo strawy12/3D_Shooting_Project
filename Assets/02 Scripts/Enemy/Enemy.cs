@@ -103,9 +103,10 @@ public class Enemy : PoolableMono, IHittable
 
     }
 
-    public void SetMonsterData(MonsterData data)
+    public void SetMonsterData(MonsterData data, bool isLast)
     {
         _monsterData = new MonsterData(data);
+        _monsterData.isLastMonster = isLast;
     }
 
     public void SpawnEnemy()

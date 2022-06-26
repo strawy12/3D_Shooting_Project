@@ -11,8 +11,13 @@ public class CutSceneManager : MonoBehaviour
     [SerializeField] private Animator _playerAnimator;
     [SerializeField] private TextPanel _textPanel;
 
-    #region 1_Scene
-    [Header("1. Scene")]
-    [SerializeField] private List<GameObject> _unActiveObjList;
+    #region Tutorial_Scene
+    [Header("Tutorial_Scene")]
+    [SerializeField] private CoolTimePanel _dashPanel;
+    [SerializeField] private CoolTimePanel _trapPanel;
+    [SerializeField] private CoolTimePanel _hoshiTanPanel;
+    [SerializeField] private GameObject _tutorialEnemy;
+
+
     #endregion
 }

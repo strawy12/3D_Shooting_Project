@@ -18,6 +18,6 @@ MonoBehaviour:
       attackDamage: 5
       health: 5
       isLastMonster: 0
-    spawnCnt: 5
-    nextSpawnDelay: 5
+    spawnCnt: 1
+    nextSpawnDelay: 0
   nextElementSpawnDelay: 3

@@ -25,6 +25,8 @@ public class GameManager : MonoSingleton<GameManager>
 
     public bool Test;
 
+    private int _actionNum = 0;
+
     public PlayerData Data
     {
         get
@@ -78,6 +80,8 @@ public class GameManager : MonoSingleton<GameManager>
     private void Start()
     {
         EventManager.StartListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
+        EventManager.StartListening(Constant.ARRIVED_TARGET_POS, () => NextSpawnInfo(ChangeSpawnPairType.Arrived));
+        PEventManager.StartListening(Constant.ON_TARGET_ACTION, NextSpawnInfo);
 
         SpawnMonster();
     }
@@ -91,18 +95,18 @@ public class GameManager : MonoSingleton<GameManager>
 
         StartCoroutine(SpawnMonsterCoroutine());
     }
+    private void NextSpawnInfo(Param param)
+    {
+        if (_actionNum != param.iParam) return;
 
+        NextSpawnInfo(ChangeSpawnPairType.Action);
+    }
     private void NextSpawnInfo(ChangeSpawnPairType type)
     {
         if (_currentSpawnPair.isSpawning) return;
         if (_currentSpawnPair.changeType != type) return;
 
-        if (_currentSpawnPair.monsterSpawnInfoDataSO.Count == 0)
-        {
-            NextElement();
-            return;
-        }
-
+        _currentSpawnPair.endSpawnAction?.Invoke();
         SpawnMonster();
     }
 
@@ -119,7 +123,8 @@ public class GameManager : MonoSingleton<GameManager>
             for (int j = 0; j < info.spawnCnt; j++)
             {
                 enemy = PoolManager.Inst.Pop(info.enemy.name) as Enemy;
-                enemy.SetMonsterData(info.monsterData);
+                bool isLast = j == info.spawnCnt - 1;
+                enemy.SetMonsterData(info.monsterData, isLast);
                 enemy.SetPositionAndRotation(_currentSpawnPair.spawnPos.position, _currentSpawnPair.spawnPos.rotation);
                 enemy.SpawnEnemy();
 
@@ -129,6 +134,7 @@ public class GameManager : MonoSingleton<GameManager>
                 }
                 yield return new WaitForSeconds(info.nextSpawnDelay);
             }
+
             yield return new WaitForSeconds(_currentSpawnPair.monsterSpawnInfoDataSO.nextElementSpawnDelay);
 
         }
@@ -139,7 +145,18 @@ public class GameManager : MonoSingleton<GameManager>
         {
             yield return new WaitForSeconds(_currentSpawnPair.spawnDelay);
 
-            SpawnMonster();
+            NextSpawnInfo(ChangeSpawnPairType.Delay);
+        }
+
+        else if(_currentSpawnPair.changeType == ChangeSpawnPairType.Action)
+        {
+            if(_currentSpawnPair.actionNum == -1)
+            {
+                Debug.LogError("action 설정하고 넘버 설정 안함");
+                yield break;
+            }
+
+            _actionNum = _currentSpawnPair.actionNum;
         }
     }
 
@@ -156,14 +173,9 @@ public class GameManager : MonoSingleton<GameManager>
     }
 
     private void SetItemPanel(EItemType type)
-    {
+   {
         ItemPanel panel = _uiManager.FindItemPanel(type);
         panel.SetCountText();
-    }
-
-    private void NextElement()
-    {
-
     }
 
     private void OnApplicationQuit()
