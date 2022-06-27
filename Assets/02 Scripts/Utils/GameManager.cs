@@ -86,7 +86,7 @@ public class GameManager : MonoSingleton<GameManager>
         PEventManager.StartListening(Constant.ARRIVED_TARGET_POS, NextSpawnInfo);
         PEventManager.StartListening(Constant.ON_TARGET_ACTION, NextSpawnInfo);
 
-        int n = PlayerPrefs.GetInt("TUTORIAL", 0);
+        int n = PlayerPrefs.GetInt("TUTORIAL", 1);
         if (n == 0)
         {
             GetComponent<CutSceneManager>().TutorialStart();
