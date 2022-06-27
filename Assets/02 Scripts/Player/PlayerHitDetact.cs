@@ -61,6 +61,7 @@ public class PlayerHitDetact : MonoBehaviour
 
                 if (hit.collider != null && hit.transform.root.gameObject.layer == 9)
                 {
+                    Debug.Log(hit.collider.gameObject.name);
                     IHittable hitTarget = hit.transform.root.GetComponent<IHittable>();
 
                     if (hitTarget.CanAttack == false) continue;

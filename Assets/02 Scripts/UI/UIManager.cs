@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InteractionUI _interationUI = null;
     [SerializeField] private DoorOpenArlamPanel _doorOpenArlamPanel = null;
 
+    [SerializeField] private CanvasGroup _settingPanel;
+    private bool _opeSettingPanel;
 
     private Stack<TMP_Text> _damagePopupPool = new Stack<TMP_Text>();
     private Stack<TMP_Text> _killTextPool = new Stack<TMP_Text>();
@@ -34,6 +36,11 @@ public class UIManager : MonoBehaviour
                 _currentInteractionObject.TakeAction();
                 _currentInteractionObject = null;
             }
+        }
+         
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            ActiveSettingPanel();
         }
     }
 
@@ -165,5 +172,14 @@ public class UIManager : MonoBehaviour
     public void DoorOpen()
     {
         _doorOpenArlamPanel.StartEffect();
+    }
+
+
+    public void ActiveSettingPanel()
+    {
+        _opeSettingPanel = !_opeSettingPanel;
+        _settingPanel.DOFade(_opeSettingPanel ? 1f : 0f, 1f).SetUpdate(true);
+        Cursor.lockState = _opeSettingPanel ? CursorLockMode.None : CursorLockMode.Locked;
+        Time.timeScale = _opeSettingPanel ? 0f : 1f;
     }
 }

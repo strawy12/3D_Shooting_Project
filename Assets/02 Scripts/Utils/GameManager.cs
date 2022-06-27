@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
@@ -85,7 +86,16 @@ public class GameManager : MonoSingleton<GameManager>
         PEventManager.StartListening(Constant.ARRIVED_TARGET_POS, NextSpawnInfo);
         PEventManager.StartListening(Constant.ON_TARGET_ACTION, NextSpawnInfo);
 
-        SpawnMonster();
+        int n = PlayerPrefs.GetInt("TUTORIAL", 0);
+        if (n == 0)
+        {
+            GetComponent<CutSceneManager>().TutorialStart();
+        }
+
+        else
+        {
+            SpawnMonster();
+        }
     }
 
     private void SpawnMonster()
@@ -130,7 +140,7 @@ public class GameManager : MonoSingleton<GameManager>
             for (int j = 0; j < info.spawnCnt; j++)
             {
                 enemy = PoolManager.Inst.Pop(info.enemy.name) as Enemy;
-                bool isLast = j == info.spawnCnt - 1;
+                bool isLast = (j == info.spawnCnt - 1) && _currentSpawnPair.changeType == ChangeSpawnPairType.AllKill;
                 enemy.SetMonsterData(info.monsterData, isLast);
                 enemy.SetPositionAndRotation(_currentSpawnPair.spawnPos.position, _currentSpawnPair.spawnPos.rotation);
                 enemy.SpawnEnemy();
@@ -183,6 +193,23 @@ public class GameManager : MonoSingleton<GameManager>
     {
         _playerData.SubCount(itemType);
         SetItemPanel(itemType);
+    }
+
+    public void ReStartBtn()
+    {
+        
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Main");
+    }
+
+    public void GameQuit()
+    {
+        Application.Quit();
+    } 
+
+    public void GoTitle()
+    {
+        SceneManager.LoadScene("Title");
     }
 
     private void SetItemPanel(EItemType type)

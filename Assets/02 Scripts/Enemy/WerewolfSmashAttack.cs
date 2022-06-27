@@ -18,12 +18,14 @@ public class WerewolfSmashAttack : EnemyAttack
     [SerializeField] private float _lifeTime;
 
     private int _damage;
+    [SerializeField ]private float _damageFactor = 2f;
+    public bool WaitAttack => _waitBeforeNextAttack;
 
     public override void Attack(int damage)
     {
         if (_waitBeforeNextAttack == false)
         {
-            _damage = damage;
+            _damage = (int)(damage * _damageFactor);
             OnAttackFeedBack?.Invoke();
             StartCoroutine(WaitBeforeAttackCoroutine());
             StartCoroutine(WaitDelayTime());
@@ -39,7 +41,6 @@ public class WerewolfSmashAttack : EnemyAttack
         for (int i = 1; i <= 3; i++)
         {
             Vector3 pos = transform.position + (transform.forward * _generatePosOffset) + (transform.forward * i * _generateInterval);
-            pos.y = 0f;
             GenerateColumn(pos);
             yield return new WaitForSeconds(_generateDelayTime);
         }
@@ -52,7 +53,6 @@ public class WerewolfSmashAttack : EnemyAttack
         if (effect != null)
         {
             Vector3 pos = transform.position;
-            pos.y = 0f;
             effect.SetPositionAndRotation(pos, transform.rotation);
             effect.StartEffect(0.3f);
         }
@@ -61,9 +61,10 @@ public class WerewolfSmashAttack : EnemyAttack
     private void GenerateColumn(Vector3 pos)
     {
         Column column = PoolManager.Inst.Pop("Skill_Column") as Column;
-
+        Debug.Log(pos);
         if (column != null)
         {
+            column.OnColliderEnter.RemoveAllListeners();
             column.OnColliderEnter.AddListener(AttackSuccess);
             column.transform.SetPositionAndRotation(pos, transform.rotation);
             column.Aspire(_spawnTime, _disableTime, _effectOffset, _lifeTime);
@@ -72,7 +73,12 @@ public class WerewolfSmashAttack : EnemyAttack
 
     private void AttackSuccess(Collider col)
     {
+        if (((1 << col.gameObject.layer) & _targetLayer) == 0) return;
 
+        _aiBrain.ActionData.attack = false;
+        IHittable hittable = GetTarget().GetComponent<IHittable>();
+        hittable.HitPoint = col.transform.position;
+        hittable?.GetHit(damage: _damage, damagerDealer: gameObject);
     }
 
 

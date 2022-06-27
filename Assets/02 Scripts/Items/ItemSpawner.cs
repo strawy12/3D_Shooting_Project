@@ -10,7 +10,7 @@ public class ItemSpawner : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnDelay());
+        SpawnItem();
     }
 
     public IEnumerator SpawnDelay()

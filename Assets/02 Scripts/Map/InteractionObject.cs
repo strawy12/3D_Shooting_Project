@@ -37,12 +37,9 @@ public abstract class InteractionObject : MonoBehaviour
     private void Detact()
     {
         Collider[] col = Physics.OverlapSphere(transform.position, _detactRange, LayerMask.GetMask("Player"));
-        Debug.Log(col.Length);
-        foreach (var c in col) Debug.Log(c.name);
-        if(col.Length == 1)
+        
+        if(col.Length != 0)
         {
-            Debug.Log(22);
-
             GameManager.Inst.UI.ShowInteractionUI(GetInteractionText(), this);
         }
 

@@ -22,10 +22,15 @@ public class Column : PoolableMono
         {
             _meshRenderer = GetComponentInChildren<MeshRenderer>();
         }
+        transform.position -= Vector3.up * height;
 
-        transform.DOMoveY(-height, 0f);
+        Color color = _meshRenderer.material.color;
+        color.a = 1f;
+        _meshRenderer.material.color = color;
+
+
         GenerateEffect(spawnTime + effectOffset);
-        seq.Append(transform.DOMoveY(0f, spawnTime).SetEase(Ease.InCubic));
+        seq.Append(transform.DOMoveY(transform.position.y + height, spawnTime).SetEase(Ease.InCubic));
         seq.Join(_mainMeshTrm.DOShakePosition(spawnTime + effectOffset, 0.5f, 10, 90));
         seq.AppendCallback(() => DisapearColumn(disableTime, lifeTime));
     }
@@ -36,9 +41,7 @@ public class Column : PoolableMono
 
     private void ColumnDisable()
     {
-        Color color = _meshRenderer.material.color;
-        color.a = 1f;
-        _meshRenderer.material.color = color;
+
 
         PoolManager.Inst.Push(this);
     }

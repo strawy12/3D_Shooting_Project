@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5893504013205076687}
   - component: {fileID: 5018864571289478760}
   - component: {fileID: 3167335414473635733}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Skill_Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 5126489141409566238}
   - component: {fileID: 9108564611356695578}
   - component: {fileID: 5521916739662177272}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ColumnMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

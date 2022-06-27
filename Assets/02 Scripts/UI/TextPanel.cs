@@ -9,11 +9,6 @@ public class TextPanel : MonoBehaviour
     [SerializeField] private TMP_Text _messageText;  
     [SerializeField] private float _textSpeed = 0.03f;
 
-    private void Start()
-    {
-        ShowTextPanel("Çı¿¬¾Æ »ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ»ç¶ûÇØ", "À¯ÇÏÁØ", Color.red);
-    }
-
     public void ShowTextPanel(string text, string name, Color nameColor)
     {
         _messageText.text = "";

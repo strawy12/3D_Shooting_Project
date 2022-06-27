@@ -8,13 +8,24 @@ public class WereWolfAttack : EnemyAttack
     private bool _waitAttack;
     // TODO : 추후 코드를 수정하게 된다면 Snake 어택과 함께 이 collider trigger event 구독 구조를 개선하길 요구함
     [SerializeField] private ColliderTiggerEvent _attackCol;
+    [SerializeField] private WerewolfSmashAttack _smashAttack;
 
-    private void Start()
+    protected override void ChildAwake()
     {
+        _attackCol.enabled = false;
+        _smashAttack = GetComponent<WerewolfSmashAttack>();
+
         _attackCol.OnEnterCollider += (AttackSuccess);
     }
     public override void Attack(int damage)
     {
+        if (_smashAttack.WaitAttack == false && _waitBeforeNextAttack == false)
+        {
+            _smashAttack.Attack(damage);
+            StartCoroutine(WaitBeforeAttackCoroutine());
+            return;
+        }
+
         if (_waitBeforeNextAttack == false)
         {
             _attackCol.enabled = true;
@@ -33,7 +44,6 @@ public class WereWolfAttack : EnemyAttack
 
     public void AttackSuccess(Collider col)
     {
-        Debug.Log(12);
         if (((1 << col.gameObject.layer) & _targetLayer) == 0) return;
 
         if (_waitAttack == false) return;
