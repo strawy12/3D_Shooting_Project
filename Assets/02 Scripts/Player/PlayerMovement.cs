@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerMovement : AgentMovement
 {
     [SerializeField] private float _jumpPower = 5f;
+    [SerializeField] private LayerMask _groundMask; 
     protected Rigidbody _rigid;
     protected Collider _collider;
 
@@ -75,10 +76,10 @@ public class PlayerMovement : AgentMovement
 
     protected bool IsGround()
     {
-        Vector3 pos = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y, _collider.bounds.center.z);
+        Vector3 pos = new Vector3(_collider.bounds.center.x, _collider.bounds.min.y , _collider.bounds.center.z);
         Vector3 size = _collider.bounds.size * 0.5f;
         size.y = 0.1f;
-        return Physics.OverlapBox(pos, size, Quaternion.identity).Length > 1;
+        return Physics.OverlapBox(pos, size, Quaternion.identity, _groundMask).Length > 0;
     }
 
     public override void ImmediatelyForwardBody()

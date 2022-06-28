@@ -34,10 +34,6 @@ public class Seed : Projectile
     {
         if (_isDead) return;
 
-        if (other.gameObject.layer == _obstacleLayer)
-        {
-            HitObstacle(other);
-        }
 
         if (other.gameObject.layer == _enemyLayer)
         {
@@ -56,7 +52,6 @@ public class Seed : Projectile
         {
             return; // 아군 피격
         }
-        Debug.Log("dd");
 
         hittable?.GetHit(_projectileData.damage * damageFactor, damagerDealer: gameObject);
     }

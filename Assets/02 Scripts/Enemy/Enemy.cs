@@ -15,6 +15,7 @@ public class Enemy : PoolableMono, IHittable
     [SerializeField] private Transform _hitEffectPos;
     [SerializeField] private GameObject _hitCollider;
     [SerializeField] private Material _hitMat;
+    [SerializeField] private bool _isTutorial;
 
     private SkinnedMeshRenderer _skinnedMeshRederer;
     private NavMeshAgent _navMeshAgent;
@@ -49,10 +50,19 @@ public class Enemy : PoolableMono, IHittable
         if (!_init)
         {
             _init = true;
-            _navMeshAgent = GetComponent<NavMeshAgent>();
-            _navMeshAgent.enabled = false;
-            _enemyAttacks = GetComponents<EnemyAttack>();
-            _enemyMovement = GetComponent<EnemyMovement>();
+            if (!_isTutorial)
+            {
+                _navMeshAgent = GetComponent<NavMeshAgent>();
+                _navMeshAgent.enabled = false;
+                _enemyAttacks = GetComponents<EnemyAttack>();
+                _enemyMovement = GetComponent<EnemyMovement>();
+            }
+
+            else
+            {
+                _monsterData = new MonsterData();
+
+            }
             _skinnedMeshRederer = GetComponentInChildren<SkinnedMeshRenderer>();
 
             Material[] temp = new Material[2];
@@ -82,7 +92,7 @@ public class Enemy : PoolableMono, IHittable
         //    isCritical = true;
         //}
 
-        _monsterData.health -=  (int)(damage * _additionalDamageFactor);
+        _monsterData.health -= (int)(damage * _additionalDamageFactor);
 
         ShowHitOutline();
         GenerateHitEffect((int)(damage * _additionalDamageFactor));
@@ -144,7 +154,7 @@ public class Enemy : PoolableMono, IHittable
         {
             if (attack.AttackType == EnemyAttack.EAttackType.Default)
             {
-                if(_monsterData == null)
+                if (_monsterData == null)
                 {
                     attack.Attack(1);
                     return;
@@ -161,9 +171,10 @@ public class Enemy : PoolableMono, IHittable
         _hitCollider.SetActive(false);
         _isDead = true;
         CanAttack = false;
-        _enemyMovement.StopImmediatelly();
+        if (!_isTutorial)
+            _enemyMovement.StopImmediatelly();
 
-        GameManager.Inst.UI.GenerateKillText("Snake");
+        GameManager.Inst.UI.GenerateKillText(gameObject.name);
         if (_monsterData.isLastMonster)
         {
             EventManager.TriggerEvent(Constant.ALL_KILL_MONSTER);
@@ -182,7 +193,8 @@ public class Enemy : PoolableMono, IHittable
     private IEnumerator DeadDelay()
     {
         yield return new WaitForSeconds(3f);
-        _navMeshAgent.enabled = false;
+        if (!_isTutorial)
+            _navMeshAgent.enabled = false;
         PoolManager.Inst.Push(this);
     }
 

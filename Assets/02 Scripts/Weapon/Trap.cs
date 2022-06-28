@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Trap : PoolableMono
 {
     [SerializeField] private LayerMask _targetMask;
     [SerializeField] private float _duration;
 
+    public UnityEvent OnTrap;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,6 +18,7 @@ public class Trap : PoolableMono
             if (hit == null) return;
 
             hit.GetHitTrapEffect(_duration);
+            OnTrap?.Invoke();
             PoolManager.Inst.Push(this);
         }
     }

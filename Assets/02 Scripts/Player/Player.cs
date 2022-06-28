@@ -19,7 +19,9 @@ public class Player : MonoBehaviour, IHittable
     public UnityEvent OnDie { get; set; }
     [field: SerializeField]
     public UnityEvent OnGetHit { get; set; }
+    public UnityEvent OnGetShieldHit;
     public UnityEvent OnGetItem;
+    public UnityEvent OnShieldBreak;
 
     public Vector3 HitPoint { get; set; }
 
@@ -87,9 +89,10 @@ public class Player : MonoBehaviour, IHittable
         {
             _shielHealth -= damage;
             damage -= _shielHealth;
+            OnGetShieldHit?.Invoke();
         }
-        
-        if(damage > 0f)
+
+        if (damage > 0f)
         {
             _health -= damage;
             OnGetHit?.Invoke();
@@ -98,6 +101,8 @@ public class Player : MonoBehaviour, IHittable
 
         if (_currentSheild != null && _shielHealth <= 0f )
         {
+            OnShieldBreak?.Invoke();
+
             _currentSheild.EndEffect();
             _currentSheild = null;
         }

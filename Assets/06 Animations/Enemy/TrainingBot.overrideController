@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TrainingBot
+  m_Controller: {fileID: 9100000, guid: 6a77923d75644124aa123126e78f8871, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 57b55e7b615faea40b7b70b5f79de56e, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 50c6216ea1b52614fbc7cbb0396a6d57, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 857b5c872d94978419c7fe4d01186c1a, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 04cb47c6e4161d641b246e60c8fc9a1d, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: a9db19057d3eb724eb0365631f75a66c, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 01bf58608766b3d45af02964fb9bf969, type: 3}

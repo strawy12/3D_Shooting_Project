@@ -32,7 +32,12 @@ public class BloomAttack : EnemyAttack
         Seed seed = PoolManager.Inst.Pop("Seed") as Seed;
         seed.SetPositionAndRotation(pos, Quaternion.identity);
         seed.damageFactor = damage;
-        seed.ShootSeed(pos + transform.forward * _shootForce);
+
+        Vector3 dir = Define.PlayerRef.position - pos;
+        dir.y = 0f;
+       
+
+        seed.ShootSeed(dir.normalized * _shootForce);
 
 
     }

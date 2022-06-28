@@ -9,6 +9,12 @@ public class MonsterData
     public int health;
     [HideInInspector]
     public bool isLastMonster;
+    public MonsterData()
+    {
+        attackDamage = 0;
+        isLastMonster = false;
+        health = 10;
+    }
     public MonsterData(MonsterData data)
     {
         health = data.health;
