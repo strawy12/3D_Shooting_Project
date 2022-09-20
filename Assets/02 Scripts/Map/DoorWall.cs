@@ -82,7 +82,6 @@ public class DoorWall : InteractionObject
 
     public void UnLockDoor()
     {
-        GameManager.Inst.UI.DoorOpen();
         _isLock = false;
     }
 

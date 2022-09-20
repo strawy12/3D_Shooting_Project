@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text _damagePopupTemp;
     [SerializeField] private TMP_Text _killTextTemp;
+    [SerializeField] private PingUI _pingUITemp;
 
     [SerializeField] private float _spreadRange = 300f;
     [SerializeField] private float _maxDropPosY = 100f;
@@ -21,10 +22,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] private DoorOpenArlamPanel _doorOpenArlamPanel = null;
 
     [SerializeField] private CanvasGroup _settingPanel;
+
+    [SerializeField] private TextPanel _textPanel;
+
     private bool _opeSettingPanel;
 
     private Stack<TMP_Text> _damagePopupPool = new Stack<TMP_Text>();
     private Stack<TMP_Text> _killTextPool = new Stack<TMP_Text>();
+    private Stack<PingUI> _pingUIPool = new Stack<PingUI>();
     private InteractionObject _currentInteractionObject;
 
     private void Update()
@@ -37,8 +42,8 @@ public class UIManager : MonoBehaviour
                 _currentInteractionObject = null;
             }
         }
-         
-        if(Input.GetKeyDown(KeyCode.Escape))
+
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             ActiveSettingPanel();
         }
@@ -174,6 +179,30 @@ public class UIManager : MonoBehaviour
         _doorOpenArlamPanel.StartEffect();
     }
 
+    public PingUI PopPingUI()
+    {
+         
+        PingUI pingUI = null;
+        if (_pingUIPool.Count == 0)
+        {
+            pingUI = Instantiate(_pingUITemp, _pingUITemp.transform.parent);
+        }
+
+        else
+        {
+            pingUI = _pingUIPool.Pop();
+        }
+
+        pingUI.Init();
+
+        return pingUI;
+    }
+
+    public void PushPingUI(PingUI pingUI)
+    {
+        pingUI.gameObject.SetActive(false);
+        _pingUIPool.Push(pingUI);
+    }
 
     public void ActiveSettingPanel()
     {
@@ -181,5 +210,11 @@ public class UIManager : MonoBehaviour
         _settingPanel.DOFade(_opeSettingPanel ? 1f : 0f, 1f).SetUpdate(true);
         Cursor.lockState = _opeSettingPanel ? CursorLockMode.None : CursorLockMode.Locked;
         Time.timeScale = _opeSettingPanel ? 0f : 1f;
+    }
+
+    public void ShowTextPanel(string text)
+    {
+        _textPanel.ShowTextPanel(text, "System", Color.red);
+        _textPanel.UnShowTextPanel((text.Length * 0.03f) + 3f);
     }
 }

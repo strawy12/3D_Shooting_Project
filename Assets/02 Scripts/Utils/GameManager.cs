@@ -17,10 +17,11 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField] private int _startIndex = 13;
     [SerializeField] private List<SpawnPair> _spawnPairList;
     [SerializeField] private Transform _teleportPos;
-
+    [SerializeField] private AudioClip _pingClip;
     private GameState _gameState;
     public GameState GameState { get => _gameState; set => _gameState = value; }
 
+    private AudioSource _audioSource;
     private SpawnPair _currentSpawnPair;
     private PlayerData _playerData;
 
@@ -78,6 +79,8 @@ public class GameManager : MonoSingleton<GameManager>
             _playerData = new PlayerData();
             _playerData.InitItemDict();
         }
+
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -181,6 +184,17 @@ public class GameManager : MonoSingleton<GameManager>
         {
             _actionNum = -1;
         }
+    }
+
+    public void SpawnPing(Transform pos)
+    {
+        Ping ping = PoolManager.Inst.Pop("Ping") as Ping;
+
+        ping.transform.position = pos.position;
+        _audioSource.Stop();
+        _audioSource.clip = _pingClip;
+        _audioSource.Play();
+        ping.InitPing();
     }
 
     public void AddItemCount(EItemType itemType)

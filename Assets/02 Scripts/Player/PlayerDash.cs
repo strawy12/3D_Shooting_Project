@@ -74,6 +74,7 @@ public class PlayerDash : MonoBehaviour
         }
         OnDashFeedBack?.Invoke();
         _dashEffect.StartEffect(targetDir, duration + _effectDurationOffset);
+
         transform.DOMove(destination, duration).SetEase(Ease.InCubic).OnComplete(Release);
     }
 
@@ -128,12 +129,17 @@ public class PlayerDash : MonoBehaviour
         Vector3 destination;
         Vector3 topPos = transform.position + Vector3.up * 1.5f;
         Vector3 middlePos = transform.position + Vector3.up * 0.9f;
-        Vector3 bottomPos = transform.position + Vector3.up * 0f;
+        Vector3 bottomPos = transform.position + Vector3.up * 0.2f;
+
+        Debug.DrawRay(topPos, targetDir.normalized * (_dashDistance + _dashDistanceOffset), Color.blue, 3f);
+        Debug.DrawRay(middlePos, targetDir.normalized * (_dashDistance + _dashDistanceOffset), Color.blue,3f);
+        Debug.DrawRay(bottomPos, targetDir.normalized * (_dashDistance + _dashDistanceOffset), Color.blue,3f);
+
         if (Physics.Raycast(bottomPos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer) ||
             Physics.Raycast(middlePos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer) ||
             Physics.Raycast(topPos, targetDir.normalized, out hit, _dashDistance + _dashDistanceOffset, _cantThroughLayer))
         {
-
+            Debug.Log("blocked");
             _isBlocked = true;
 
             Vector3 hitPoint = hit.point;
@@ -141,8 +147,14 @@ public class PlayerDash : MonoBehaviour
             originPos.y = 0f;
             hitPoint.y = 0f;
 
+            if(hit.collider.gameObject.layer == LayerMask.GetMask("Stair"))
+            {
+                hitPoint = hit.collider.transform.root.Find("DashCollider").position;
+                hitPoint.y = 0f;
+            }
+
             float distance = Vector3.Distance(originPos, hitPoint);
-            destination = currentPos + transform.forward *( distance - _destinationBlockedOffset);
+            destination = currentPos + targetDir.normalized * ( distance - _destinationBlockedOffset);
         }
         else
         {

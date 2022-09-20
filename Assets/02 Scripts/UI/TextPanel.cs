@@ -16,8 +16,23 @@ public class TextPanel : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         seq.Append(_messageText.DOFade(1f, 0.5f));
         seq.Insert(0.3f,DOTween.To(() => _messageText.text,
-                    value => _messageText.text = string.Format("<color=#{0}>{1}</color>:{2}",color, name, value),
+                    value => _messageText.text = value,
                     text, text.Length * _textSpeed)
             );
+    }
+
+    public void UnShowTextPanel(float delay)
+    {
+        StartCoroutine(UnShowDelay(delay));
+    }
+
+    private IEnumerator UnShowDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        _messageText.DOFade(0f, 0.5f);
+
+        yield return new WaitForSeconds(0.5f);
+        _messageText.text = "";
+
     }
 }

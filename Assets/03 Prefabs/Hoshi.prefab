@@ -397,7 +397,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -5917967031692781817, guid: 050984c7672ab9e42b62959782b3a41e, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 0.495
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -968,8 +968,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _pitchRandmness: 0.2
-  _effectClip: {fileID: 8300000, guid: 263dbc752f568d24b875674fca95d530, type: 3}
-  _useRandomPitch: 0
+  _effectClip: {fileID: 8300000, guid: 1eddf098dc180e14281c5a7f532f3fb0, type: 3}
+  _useRandomPitch: 1
 --- !u!1 &1513970460
 GameObject:
   m_ObjectHideFlags: 0
@@ -12066,7 +12066,19 @@ MonoBehaviour:
   _recoverySpeed: 2
   <OnDie>k__BackingField:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GoTitle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <OnGetHit>k__BackingField:
     m_PersistentCalls:
       m_Calls:
@@ -12313,6 +12325,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _jumpPower: 5
+  _groundMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &5481082888364758571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12480,7 +12495,7 @@ MonoBehaviour:
   _maxDashCnt: 3
   _dashCooltime: 3
   _dashSpeed: 100
-  _destinationBlockedOffset: 0.1
+  _destinationBlockedOffset: 0.2
   _dashDistance: 5
   _dashDistanceOffset: 2
   _effectDurationOffset: 0.5
