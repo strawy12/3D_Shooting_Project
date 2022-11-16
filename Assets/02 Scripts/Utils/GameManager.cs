@@ -239,11 +239,11 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void OnApplicationQuit()
     {
-        EventManager.StartListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
+        EventManager.StopListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
     }
 
     private void OnDestroy()
     {
-        EventManager.StartListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
+        EventManager.StopListening(Constant.ALL_KILL_MONSTER, () => NextSpawnInfo(ChangeSpawnPairType.AllKill));
     }
 }
